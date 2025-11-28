@@ -1,5 +1,6 @@
 // src/lib/contracts.ts - Contract Configuration for Somnia Network
 // Centralized contract addresses and configuration
+import { getAddress } from 'viem'
 
 /**
  * GigEscrow Contract Address
