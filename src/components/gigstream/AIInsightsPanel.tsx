@@ -23,6 +23,11 @@ export default function AIInsightsPanel() {
     }
   }, [address, reputation])
 
+  // Don't retry if API key is not configured
+  const shouldRetry = (error: any) => {
+    return !error?.message?.includes('API key') && !error?.message?.includes('not configured')
+  }
+
   const loadInsights = async () => {
     setIsLoading(true)
     setError(null)
@@ -75,8 +80,19 @@ export default function AIInsightsPanel() {
         })
       }
     } catch (error: any) {
-      console.error('Error loading insights:', error)
-      setError(error.message || 'Error loading insights')
+      // Only log if it's not a configuration error
+      const isConfigError = error?.message?.includes('API key') || error?.message?.includes('not configured')
+      if (!isConfigError) {
+        console.error('Error loading insights:', error)
+      }
+      
+      // Set user-friendly error message
+      if (isConfigError) {
+        setError('Gemini AI is not configured. Showing fallback insights.')
+      } else {
+        setError(error?.message || 'Failed to load insights. Showing fallback data.')
+      }
+      
       // Fallback insights
       setInsights({
         marketTrends: [
