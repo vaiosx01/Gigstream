@@ -3,6 +3,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEventStream, StreamEvent } from '@/hooks/useEventStream'
+import { useHistoricalEvents } from '@/hooks/useHistoricalEvents'
 import { formatEther } from 'viem'
 import { formatDistanceToNow } from 'date-fns'
 import { enUS } from 'date-fns/locale'
@@ -15,7 +16,7 @@ import {
   Zap,
   Clock
 } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 
 interface LiveEventsPanelProps {
   className?: string
@@ -28,25 +29,69 @@ export default function LiveEventsPanel({
 }: LiveEventsPanelProps) {
   const [activeTab, setActiveTab] = useState<'all' | 'jobs' | 'bids' | 'completions' | 'cancellations' | 'reputation'>('all')
   
+  // Real-time streams
   const jobsStream = useEventStream('jobs', true)
   const bidsStream = useEventStream('bids', true)
   const completionsStream = useEventStream('completions', true)
   const cancellationsStream = useEventStream('cancellations', true)
   const reputationStream = useEventStream('reputation', true)
 
+  // Historical events
+  const { events: historicalEvents, isLoading: isLoadingHistorical } = useHistoricalEvents()
+
   interface EventWithStreamType extends StreamEvent {
     streamType: 'jobs' | 'bids' | 'completions' | 'cancellations' | 'reputation'
   }
 
-  const allEvents: EventWithStreamType[] = [
-    ...jobsStream.events.map(e => ({ ...e, streamType: 'jobs' as const })),
-    ...bidsStream.events.map(e => ({ ...e, streamType: 'bids' as const })),
-    ...completionsStream.events.map(e => ({ ...e, streamType: 'completions' as const })),
-    ...cancellationsStream.events.map(e => ({ ...e, streamType: 'cancellations' as const })),
-    ...reputationStream.events.map(e => ({ ...e, streamType: 'reputation' as const })),
-  ]
-    .sort((a, b) => (b.receivedAt || 0) - (a.receivedAt || 0))
-    .slice(0, maxEvents)
+  // Combine real-time and historical events, removing duplicates by transaction hash
+  const allEvents: EventWithStreamType[] = useMemo(() => {
+    const realTimeEvents: EventWithStreamType[] = [
+      ...jobsStream.events.map(e => ({ ...e, streamType: 'jobs' as const })),
+      ...bidsStream.events.map(e => ({ ...e, streamType: 'bids' as const })),
+      ...completionsStream.events.map(e => ({ ...e, streamType: 'completions' as const })),
+      ...cancellationsStream.events.map(e => ({ ...e, streamType: 'cancellations' as const })),
+      ...reputationStream.events.map(e => ({ ...e, streamType: 'reputation' as const })),
+    ]
+
+    // Map historical events to stream types
+    const historicalWithStreamType: EventWithStreamType[] = historicalEvents.map(e => {
+      let streamType: 'jobs' | 'bids' | 'completions' | 'cancellations' | 'reputation' = 'jobs'
+      if (e.type === 'BidPlaced') streamType = 'bids'
+      else if (e.type === 'JobCompleted') streamType = 'completions'
+      else if (e.type === 'JobCancelled') streamType = 'cancellations'
+      else if (e.type === 'ReputationUpdated') streamType = 'reputation'
+      return { ...e, streamType }
+    })
+
+    // Combine and deduplicate by transaction hash
+    const eventMap = new Map<string, EventWithStreamType>()
+    
+    // Add historical events first (older)
+    historicalWithStreamType.forEach(e => {
+      if (e.transactionHash) {
+        eventMap.set(e.transactionHash, e)
+      }
+    })
+    
+    // Add real-time events (newer, will overwrite duplicates)
+    realTimeEvents.forEach(e => {
+      if (e.transactionHash) {
+        eventMap.set(e.transactionHash, e)
+      }
+    })
+
+    return Array.from(eventMap.values())
+      .sort((a, b) => (b.receivedAt || 0) - (a.receivedAt || 0))
+      .slice(0, maxEvents)
+  }, [
+    jobsStream.events,
+    bidsStream.events,
+    completionsStream.events,
+    cancellationsStream.events,
+    reputationStream.events,
+    historicalEvents,
+    maxEvents
+  ])
 
   const filteredEvents = activeTab === 'all' 
     ? allEvents 
