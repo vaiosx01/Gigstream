@@ -88,13 +88,19 @@ export default function GeminiBot() {
           ? { ...msg, content: response, status: 'delivered', model: 'gemini' }
           : msg
       ))
-    } catch (error) {
+    } catch (error: any) {
+      const errorMessage = error?.message || 'Error temporal. Por favor intenta de nuevo.'
       setMessages(prev => prev.map(msg => 
         msg.id === botMessageId 
-          ? { ...msg, content: 'Temporary error. Please try again.', status: 'error' }
+          ? { ...msg, content: errorMessage, status: 'error' }
           : msg
       ))
-      showToast({ title: 'Error', description: 'Could not connect to Gemini' })
+      showToast({ 
+        title: 'Error', 
+        description: errorMessage.includes('no está configurado') 
+          ? 'Gemini AI no está configurado en producción'
+          : 'No se pudo conectar con Gemini AI'
+      })
     } finally {
       setIsLoading(false)
     }

@@ -14,7 +14,7 @@ import Navbar from '@/components/somnia/Navbar'
 import Footer from '@/components/somnia/Footer'
 import Link from 'next/link'
 import { formatDistanceToNow } from 'date-fns'
-import { es } from 'date-fns/locale'
+import { enUS } from 'date-fns/locale'
 import { useState } from 'react'
 
 export default function JobDetailPage() {
@@ -37,8 +37,8 @@ export default function JobDetailPage() {
   const handlePlaceBid = async () => {
     if (!hasMinReputation) {
       showToast({
-        title: "Reputación insuficiente",
-        description: "Necesitas al menos 10 puntos de reputación para hacer ofertas",
+        title: "Insufficient Reputation",
+        description: "You need at least 10 reputation points to place bids",
       })
       return
     }
@@ -46,8 +46,8 @@ export default function JobDetailPage() {
     try {
       await placeBid(jobId, bidAmount || '0')
       showToast({
-        title: "Oferta enviada",
-        description: "Tu oferta ha sido registrada en la blockchain",
+        title: "Bid Submitted",
+        description: "Your bid has been recorded on the blockchain",
       })
       setBidAmount('')
       setShowBidForm(false)
@@ -55,7 +55,7 @@ export default function JobDetailPage() {
     } catch (error: any) {
       showToast({
         title: "Error",
-        description: error?.message || "No se pudo enviar la oferta",
+        description: error?.message || "Failed to submit bid",
       })
     }
   }
@@ -64,15 +64,15 @@ export default function JobDetailPage() {
     try {
       await acceptBid(jobId, workerAddress)
       showToast({
-        title: "Oferta aceptada",
-        description: "El trabajador ha sido asignado al trabajo",
+        title: "Bid Accepted",
+        description: "The worker has been assigned to the job",
       })
       refetchJob()
       refetchBids()
     } catch (error: any) {
       showToast({
         title: "Error",
-        description: error?.message || "No se pudo aceptar la oferta",
+        description: error?.message || "Failed to accept bid",
       })
     }
   }
@@ -81,14 +81,14 @@ export default function JobDetailPage() {
     try {
       await completeJob(jobId)
       showToast({
-        title: "Trabajo completado",
-        description: "El pago ha sido liberado y tu reputación ha aumentado",
+        title: "Job Completed",
+        description: "Payment has been released and your reputation has increased",
       })
       refetchJob()
     } catch (error: any) {
       showToast({
         title: "Error",
-        description: error?.message || "No se pudo completar el trabajo",
+        description: error?.message || "Failed to complete job",
       })
     }
   }
@@ -97,14 +97,14 @@ export default function JobDetailPage() {
     try {
       await cancelJob(jobId)
       showToast({
-        title: "Trabajo cancelado",
-        description: "El reembolso ha sido procesado",
+        title: "Job Cancelled",
+        description: "Refund has been processed",
       })
       refetchJob()
     } catch (error: any) {
       showToast({
         title: "Error",
-        description: error?.message || "No se pudo cancelar el trabajo",
+        description: error?.message || "Failed to cancel job",
       })
     }
   }
@@ -114,7 +114,7 @@ export default function JobDetailPage() {
       <div className="min-h-screen bg-gradient-to-br from-neural-blue via-somnia-purple/20 to-mx-green/10">
         <Navbar />
         <main className="pt-20 flex items-center justify-center min-h-[calc(100vh-5rem)]">
-          <div className="text-white">Cargando trabajo...</div>
+          <div className="text-white">Loading job...</div>
         </main>
         <Footer />
       </div>
@@ -127,9 +127,9 @@ export default function JobDetailPage() {
         <Navbar />
         <main className="pt-20 flex items-center justify-center min-h-[calc(100vh-5rem)]">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-white mb-4">Trabajo no encontrado</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">Job Not Found</h2>
             <Link href="/gigstream" className="text-somnia-cyan hover:underline">
-              Volver al dashboard
+              Back to Dashboard
             </Link>
           </div>
         </main>
@@ -155,7 +155,7 @@ export default function JobDetailPage() {
               className="flex items-center space-x-2 text-white/70 hover:text-white transition-colors mb-4"
             >
               <ArrowLeft className="w-5 h-5" />
-              <span>Volver al dashboard</span>
+              <span>Back to Dashboard</span>
             </motion.button>
           </Link>
 
@@ -179,7 +179,7 @@ export default function JobDetailPage() {
                   </div>
                   <div className="flex items-center space-x-2">
                     <Clock className="w-4 h-4" />
-                    <span>{formatDistanceToNow(deadlineDate, { addSuffix: true, locale: es })}</span>
+                    <span>{formatDistanceToNow(deadlineDate, { addSuffix: true, locale: enUS })}</span>
                   </div>
                 </div>
               </div>
@@ -187,25 +187,25 @@ export default function JobDetailPage() {
                 {job.completed && (
                   <span className="px-4 py-2 bg-mx-green/30 rounded-full text-mx-green font-bold flex items-center space-x-2">
                     <CheckCircle className="w-5 h-5" />
-                    <span>Completado</span>
+                    <span>Completed</span>
                   </span>
                 )}
                 {job.cancelled && (
                   <span className="px-4 py-2 bg-red-400/30 rounded-full text-red-400 font-bold flex items-center space-x-2">
                     <XCircle className="w-5 h-5" />
-                    <span>Cancelado</span>
+                    <span>Cancelled</span>
                   </span>
                 )}
                 {!job.completed && !job.cancelled && isAssigned && (
                   <span className="px-4 py-2 bg-somnia-cyan/30 rounded-full text-somnia-cyan font-bold flex items-center space-x-2">
                     <User className="w-5 h-5" />
-                    <span>Asignado</span>
+                    <span>Assigned</span>
                   </span>
                 )}
                 {!job.completed && !job.cancelled && !isAssigned && (
                   <span className="px-4 py-2 bg-mx-green/30 rounded-full text-mx-green font-bold flex items-center space-x-2">
                     <Zap className="w-5 h-5" />
-                    <span>Disponible</span>
+                    <span>Available</span>
                   </span>
                 )}
               </div>
@@ -214,12 +214,12 @@ export default function JobDetailPage() {
             {/* Job Info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-4 border border-white/10">
-                <div className="text-white/60 text-xs font-mono uppercase mb-2">Empleador</div>
+                <div className="text-white/60 text-xs font-mono uppercase mb-2">Employer</div>
                 <div className="text-white font-mono">{job.employer.slice(0, 6)}...{job.employer.slice(-4)}</div>
               </div>
               {isAssigned && (
                 <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-4 border border-white/10">
-                  <div className="text-white/60 text-xs font-mono uppercase mb-2">Trabajador</div>
+                  <div className="text-white/60 text-xs font-mono uppercase mb-2">Worker</div>
                   <div className="text-white font-mono">{job.worker.slice(0, 6)}...{job.worker.slice(-4)}</div>
                 </div>
               )}
@@ -235,7 +235,7 @@ export default function JobDetailPage() {
                   disabled={isCancellingJob}
                   className="px-6 py-3 bg-red-500/20 hover:bg-red-500/30 rounded-xl text-white font-bold border border-red-500/30 disabled:opacity-50"
                 >
-                  {isCancellingJob ? 'Cancelando...' : 'Cancelar Trabajo'}
+                  {isCancellingJob ? 'Cancelling...' : 'Cancel Job'}
                 </motion.button>
               )}
               {isWorker && !job.completed && (
@@ -246,7 +246,7 @@ export default function JobDetailPage() {
                   disabled={isCompletingJob}
                   className="px-6 py-3 bg-gradient-to-r from-mx-green to-emerald-400 rounded-xl text-white font-bold shadow-neural-glow disabled:opacity-50"
                 >
-                  {isCompletingJob ? 'Completando...' : 'Completar Trabajo'}
+                  {isCompletingJob ? 'Completing...' : 'Complete Job'}
                 </motion.button>
               )}
               {canBid && (
@@ -257,7 +257,7 @@ export default function JobDetailPage() {
                   className="px-6 py-3 bg-gradient-to-r from-somnia-purple to-mx-green rounded-xl text-white font-bold shadow-neural-glow"
                 >
                   <Send className="w-5 h-5 inline mr-2" />
-                  {showBidForm ? 'Cancelar' : 'Hacer Oferta'}
+                  {showBidForm ? 'Cancel' : 'Place Bid'}
                 </motion.button>
               )}
             </div>
@@ -271,21 +271,21 @@ export default function JobDetailPage() {
               >
                 {!hasMinReputation && (
                   <div className="mb-4 p-4 bg-yellow-500/20 border border-yellow-500/30 rounded-xl text-yellow-400">
-                    <p className="font-bold mb-2">Reputación insuficiente</p>
-                    <p className="text-sm">Necesitas al menos 10 puntos de reputación. Tu reputación actual: {reputation.reputationScore}</p>
+                    <p className="font-bold mb-2">Insufficient Reputation</p>
+                    <p className="text-sm">You need at least 10 reputation points. Your current reputation: {reputation.reputationScore}</p>
                   </div>
                 )}
                 <div className="space-y-4">
                   <div>
-                    <label className="text-white/80 mb-2 block font-mono text-sm">Cantidad de oferta (STT)</label>
+                    <label className="text-white/80 mb-2 block font-mono text-sm">Bid Amount (STT)</label>
                     <input
                       type="number"
                       value={bidAmount}
                       onChange={(e) => setBidAmount(e.target.value)}
-                      placeholder="0 (opcional)"
+                      placeholder="0 (optional)"
                       className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 backdrop-blur-xl focus:outline-none focus:border-somnia-purple/50"
                     />
-                    <p className="text-xs text-white/50 mt-2">Deja en 0 para aceptar el precio del trabajo</p>
+                    <p className="text-xs text-white/50 mt-2">Leave at 0 to accept the job price</p>
                   </div>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -294,7 +294,7 @@ export default function JobDetailPage() {
                     disabled={isPlacingBid || !hasMinReputation}
                     className="w-full px-6 py-3 bg-gradient-to-r from-somnia-purple to-mx-green rounded-xl text-white font-bold shadow-neural-glow disabled:opacity-50"
                   >
-                    {isPlacingBid ? 'Enviando oferta...' : 'Enviar Oferta'}
+                    {isPlacingBid ? 'Submitting Bid...' : 'Submit Bid'}
                   </motion.button>
                 </div>
               </motion.div>
@@ -311,13 +311,13 @@ export default function JobDetailPage() {
             >
               <div className="flex items-center space-x-3 mb-6">
                 <Users className="w-6 h-6 text-somnia-cyan" />
-                <h2 className="text-2xl font-bold text-white">Ofertas ({bids.length})</h2>
+                <h2 className="text-2xl font-bold text-white">Bids ({bids.length})</h2>
               </div>
 
               {bidsLoading ? (
-                <div className="text-white/70">Cargando ofertas...</div>
+                <div className="text-white/70">Loading bids...</div>
               ) : bids.length === 0 ? (
-                <div className="text-white/70 text-center py-8">No hay ofertas aún</div>
+                <div className="text-white/70 text-center py-8">No bids yet</div>
               ) : (
                 <div className="space-y-4">
                   {bids.map((bid, index) => (
@@ -334,16 +334,16 @@ export default function JobDetailPage() {
                             {bid.worker.slice(0, 6)}...{bid.worker.slice(-4)}
                           </div>
                           <div className="text-white/70 text-sm font-mono">
-                            Oferta: {formatEther(bid.amount)} STT
+                            Bid: {formatEther(bid.amount)} STT
                           </div>
                           <div className="text-white/50 text-xs font-mono mt-1">
-                            {formatDistanceToNow(new Date(Number(bid.timestamp) * 1000), { addSuffix: true, locale: es })}
+                            {formatDistanceToNow(new Date(Number(bid.timestamp) * 1000), { addSuffix: true, locale: enUS })}
                           </div>
                         </div>
                         <div className="flex items-center space-x-3">
                           {bid.accepted && (
                             <span className="px-4 py-2 bg-mx-green/30 rounded-full text-mx-green font-bold text-sm">
-                              Aceptada
+                              Accepted
                             </span>
                           )}
                           {!bid.accepted && !isAssigned && (
@@ -354,7 +354,7 @@ export default function JobDetailPage() {
                               disabled={isAcceptingBid}
                               className="px-6 py-2 bg-gradient-to-r from-somnia-purple to-mx-green rounded-xl text-white font-bold text-sm shadow-neural-glow disabled:opacity-50"
                             >
-                              {isAcceptingBid ? 'Aceptando...' : 'Aceptar'}
+                              {isAcceptingBid ? 'Accepting...' : 'Accept'}
                             </motion.button>
                           )}
                         </div>

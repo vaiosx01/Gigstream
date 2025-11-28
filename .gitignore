@@ -25,11 +25,14 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Local env files
+# Local env files (NEVER commit these!)
 .env*.local
 .env
 .env.production
-env.example
+
+# env.example SHOULD be versioned (it's a template)
+# Remove env.example from ignore if you want to track it
+# env.example
 
 # Vercel
 .vercel

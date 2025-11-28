@@ -3,22 +3,34 @@
 
 import { GoogleGenerativeAI } from '@google/generative-ai'
 
-// Validate API key on module load
-if (!process.env.GEMINI_API_KEY && !process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
-  console.error('[AI] GEMINI_API_KEY or GOOGLE_GENERATIVE_AI_API_KEY is not set')
+// Get API key helper function (lazy initialization)
+function getApiKey(): string | null {
+  return process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY || null
 }
 
-// Create singleton instance (supports both env var names for compatibility)
-const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY
-const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null
+// Get or create Gemini instance (lazy initialization)
+let genAI: GoogleGenerativeAI | null = null
+function getGenAI(): GoogleGenerativeAI | null {
+  if (!genAI) {
+    const apiKey = getApiKey()
+    if (apiKey) {
+      genAI = new GoogleGenerativeAI(apiKey)
+    } else {
+      console.error('[AI] GEMINI_API_KEY or GOOGLE_GENERATIVE_AI_API_KEY is not set')
+    }
+  }
+  return genAI
+}
 
 // Model fallback chain (ordered by preference)
+// Updated November 2025: Only using Gemini 2.5 models
+// IMPORTANT: Gemini 1.5 models were discontinued September 24, 2025
+// Reference: https://ai.google.dev/gemini-api/docs/models
+// Note: gemini-pro, gemini-pro-vision, gemini-1.5-*, and gemini-2.0-* are NOT available
 const modelsToTry = [
-  'gemini-2.5-flash',    // Primary - Fastest, latest
-  'gemini-2.5-pro',      // Fallback 1 - More capable
-  'gemini-2.0-flash',    // Fallback 2 - Previous gen fast
-  'gemini-1.5-flash',    // Fallback 3 - Stable fast
-  'gemini-1.5-pro'       // Fallback 4 - Most capable
+  'gemini-2.5-flash',      // Primary - Fastest, latest (November 2025 - confirmed available)
+  'gemini-2.5-flash-lite', // Fallback 1 - Lighter version of 2.5-flash
+  'gemini-2.5-pro'         // Fallback 2 - More capable (if available)
 ]
 
 // Generation configuration
@@ -56,7 +68,8 @@ export async function callGemini(
   prompt: string,
   options: GeminiOptions = {}
 ): Promise<GeminiResponse> {
-  if (!genAI) {
+  const ai = getGenAI()
+  if (!ai) {
     throw new Error('Gemini API key not configured. Set GEMINI_API_KEY or GOOGLE_GENERATIVE_AI_API_KEY')
   }
 
@@ -77,7 +90,7 @@ export async function callGemini(
   // Try each model in fallback chain
   for (const modelName of modelsToTry) {
     try {
-      const model = genAI.getGenerativeModel({
+      const model = ai.getGenerativeModel({
         model: modelName,
         generationConfig: {
           temperature,

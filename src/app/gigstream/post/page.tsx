@@ -8,6 +8,7 @@ import { useAccount, useSendTransaction, useBalance } from 'wagmi'
 import { parseEther, formatEther } from 'viem'
 import { useGemini } from '@/providers/GeminiProvider'
 import { useToast } from '@/components/ui/use-toast'
+import { useGigStream } from '@/hooks/useGigStream'
 import Navbar from '@/components/somnia/Navbar'
 import Footer from '@/components/somnia/Footer'
 
@@ -17,6 +18,7 @@ export default function PostJob() {
   const { sendTransactionAsync } = useSendTransaction()
   const { generateText } = useGemini()
   const { showToast } = useToast()
+  const { jobCounter } = useGigStream()
   
   // Check user balance
   const { data: balance, isLoading: balanceLoading } = useBalance({
@@ -249,6 +251,10 @@ export default function PostJob() {
           description: `Transaction submitted: ${hash.slice(0, 10)}...`,
           duration: 5000
         })
+
+        // Note: Job will be automatically published to Somnia Data Streams
+        // via the /api/streams endpoint when it detects the JobPosted event
+        // This happens in the background and enriches the data with structured streams
 
         // Redirect to dashboard after successful post
         setTimeout(() => {

@@ -75,8 +75,48 @@ export function useGigStream() {
     address: GIGESCROW_ADDRESS,
     abi: gigEscrowAbi,
     eventName: 'JobPosted',
-    onLogs: () => {
-      refetchUserJobs()
+    onLogs: (logs) => {
+      // Check if the job was posted by the current user
+      const userPosted = logs.some((log: any) => 
+        log.args?.employer?.toLowerCase() === address?.toLowerCase()
+      )
+      if (userPosted) {
+        refetchUserJobs()
+      }
+    },
+  })
+
+  // Watch for job acceptance
+  useWatchContractEvent({
+    address: GIGESCROW_ADDRESS,
+    abi: gigEscrowAbi,
+    eventName: 'JobAccepted',
+    onLogs: (logs) => {
+      // Check if the job was accepted for the current user
+      const userInvolved = logs.some((log: any) => 
+        log.args?.worker?.toLowerCase() === address?.toLowerCase() ||
+        log.args?.employer?.toLowerCase() === address?.toLowerCase()
+      )
+      if (userInvolved) {
+        refetchUserJobs()
+        refetchWorkerJobs()
+      }
+    },
+  })
+
+  // Watch for job cancellation
+  useWatchContractEvent({
+    address: GIGESCROW_ADDRESS,
+    abi: gigEscrowAbi,
+    eventName: 'JobCancelled',
+    onLogs: (logs) => {
+      // Check if the job was cancelled by the current user
+      const userInvolved = logs.some((log: any) => 
+        log.args?.employer?.toLowerCase() === address?.toLowerCase()
+      )
+      if (userInvolved) {
+        refetchUserJobs()
+      }
     },
   })
 
@@ -86,15 +126,16 @@ export function useGigStream() {
     abi: gigEscrowAbi,
     eventName: 'BidPlaced',
     onLogs: () => {
-      // Refetch job data when bids are placed
+      // Refetch job data when bids are placed (for employers to see new bids)
+      refetchUserJobs()
     },
   })
 
   // Write contract functions
-  const { writeContract: placeBid, data: placeBidHash, isPending: isPlacingBid } = useWriteContract()
-  const { writeContract: acceptBid, data: acceptBidHash, isPending: isAcceptingBid } = useWriteContract()
-  const { writeContract: completeJob, data: completeJobHash, isPending: isCompletingJob } = useWriteContract()
-  const { writeContract: cancelJob, data: cancelJobHash, isPending: isCancellingJob } = useWriteContract()
+  const { writeContract: writePlaceBid, data: placeBidHash, isPending: isPlacingBid } = useWriteContract()
+  const { writeContract: writeAcceptBid, data: acceptBidHash, isPending: isAcceptingBid } = useWriteContract()
+  const { writeContract: writeCompleteJob, data: completeJobHash, isPending: isCompletingJob } = useWriteContract()
+  const { writeContract: writeCancelJob, data: cancelJobHash, isPending: isCancellingJob } = useWriteContract()
 
   // Wait for transactions
   const { isLoading: isPlaceBidConfirming } = useWaitForTransactionReceipt({ hash: placeBidHash })
@@ -145,11 +186,11 @@ export function useGigStream() {
 
 
   // Handler functions
-  const handlePlaceBid = async (jobId: bigint, bidAmount: string = '0') => {
+  const handlePlaceBid = async (jobId: bigint, bidAmount: string = '0'): Promise<void> => {
     if (!address || !isConnected) throw new Error('Wallet not connected')
     
     try {
-      await placeBid({
+      await writePlaceBid({
         address: GIGESCROW_ADDRESS,
         abi: gigEscrowAbi,
         functionName: 'placeBid',
@@ -161,11 +202,11 @@ export function useGigStream() {
     }
   }
 
-  const handleAcceptBid = async (jobId: bigint, workerAddress: `0x${string}`) => {
+  const handleAcceptBid = async (jobId: bigint, workerAddress: `0x${string}`): Promise<void> => {
     if (!address || !isConnected) throw new Error('Wallet not connected')
     
     try {
-      await acceptBid({
+      await writeAcceptBid({
         address: GIGESCROW_ADDRESS,
         abi: gigEscrowAbi,
         functionName: 'acceptBid',
@@ -177,11 +218,11 @@ export function useGigStream() {
     }
   }
 
-  const handleCompleteJob = async (jobId: bigint) => {
+  const handleCompleteJob = async (jobId: bigint): Promise<void> => {
     if (!address || !isConnected) throw new Error('Wallet not connected')
     
     try {
-      await completeJob({
+      await writeCompleteJob({
         address: GIGESCROW_ADDRESS,
         abi: gigEscrowAbi,
         functionName: 'completeJob',
@@ -193,11 +234,11 @@ export function useGigStream() {
     }
   }
 
-  const handleCancelJob = async (jobId: bigint) => {
+  const handleCancelJob = async (jobId: bigint): Promise<void> => {
     if (!address || !isConnected) throw new Error('Wallet not connected')
     
     try {
-      await cancelJob({
+      await writeCancelJob({
         address: GIGESCROW_ADDRESS,
         abi: gigEscrowAbi,
         functionName: 'cancelJob',

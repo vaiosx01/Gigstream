@@ -360,27 +360,49 @@ GigStream MX is fully optimized for **Somnia Network**, a high-performance L1 bl
 
 ## 🔄 Data Streams Integration
 
-Real-time event streaming using **Somnia Data Streams** and Viem's `watchEvent`:
+Real-time event streaming using **@somnia-chain/streams SDK 0.11.0** (official Somnia Data Streams SDK) + Viem's `watchEvent`:
+
+### Features
+
+✅ **Dual Data Sources**: Contract events (real-time) + Structured Data Streams (indexed)  
+✅ **Automatic Publishing**: Jobs automatically published to Data Streams when created  
+✅ **Schema Registration**: Job schema registered on-chain for structured queries  
+✅ **Real-time Streaming**: Server-Sent Events (SSE) for live contract events  
+✅ **Structured Queries**: Read jobs from Data Streams by publisher/schema  
 
 ### Supported Events
 
-| Event | Description | Real-time |
-|-------|-------------|-----------|
-| **JobPosted** | New jobs appear instantly | ✅ Yes |
-| **BidPlaced** | Bids stream in real-time | ✅ Yes |
-| **JobCompleted** | Completion events streamed | ✅ Yes |
-| **JobCancelled** | Cancellation events | ✅ Yes |
-| **ReputationUpdated** | Reputation changes | ✅ Yes |
+| Event | Description | Real-time | Data Streams |
+|-------|-------------|-----------|--------------|
+| **JobPosted** | New jobs appear instantly | ✅ Yes | ✅ Published |
+| **BidPlaced** | Bids stream in real-time | ✅ Yes | ⏳ Coming |
+| **JobCompleted** | Completion events streamed | ✅ Yes | ⏳ Coming |
+| **JobCancelled** | Cancellation events | ✅ Yes | ⏳ Coming |
+| **ReputationUpdated** | Reputation changes | ✅ Yes | ⏳ Coming |
 
 ### API Endpoints
 
-Access real-time streams via Server-Sent Events (SSE):
+**Real-time Event Streaming** (Server-Sent Events):
 
 ```
 GET /api/streams?type=jobs      # Job postings stream
 GET /api/streams?type=bids     # Bids stream
 GET /api/streams?type=completions  # Job completions stream
 ```
+
+**Data Streams API** (Structured Data Queries):
+
+```
+GET /api/sds/read-jobs?publisher=0x...&limit=50  # Read jobs from Data Streams
+POST /api/sds/publish-job                        # Publish job to Data Streams (automatic)
+```
+
+### Frontend Integration
+
+- **`useSDSJobs` Hook**: Fetch jobs from Data Streams in React components
+- **`SDSJobsIndicator` Component**: Visual indicator for Data Streams availability
+- **Automatic Publishing**: Jobs automatically published to Data Streams when created
+- **Dual Source Display**: Shows jobs from both contract and Data Streams
 
 ---
 
@@ -518,7 +540,7 @@ pnpm run test:coverage
 
 | Criteria | GigStream MX | Score |
 |----------|-------------|-------|
-| **Technical Excellence** | Hardhat + SDS SDK 0.11 | ⭐⭐⭐⭐⭐ |
+| **Technical Excellence** | Hardhat + @somnia-chain/streams SDK 0.11.0 | ⭐⭐⭐⭐⭐ |
 | **Real-time UX** | Live streams 400k TPS | ⭐⭐⭐⭐⭐ |
 | **Somnia Integration** | 100% Testnet | ⭐⭐⭐⭐⭐ |
 | **Potential Impact** | $10B real market | ⭐⭐⭐⭐⭐ |

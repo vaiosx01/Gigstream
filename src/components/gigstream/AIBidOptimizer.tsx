@@ -137,18 +137,26 @@ export default function AIBidOptimizer() {
       setModelUsed('gemini-2.5-flash') // Could be enhanced to get actual model from API
     } catch (error: any) {
       console.error('Error optimizing bid:', error)
-      setError(error.message || 'Error optimizing bid. Please try again.')
-      // Fallback
+      const errorMessage = error?.message || 'Error al optimizar la oferta. Por favor intenta de nuevo.'
+      
+      // Check if it's a configuration error
+      if (errorMessage.includes('no está configurado') || errorMessage.includes('not configured')) {
+        setError('Gemini AI no está configurado. Usando valores por defecto.')
+      } else {
+        setError(errorMessage)
+      }
+      
+      // Fallback optimization
       const optimal = Math.floor(parseInt(jobReward) * 0.65)
       setOptimization({
         optimalBid: optimal,
         savings: parseInt(currentBid) - optimal,
         winProbability: 78,
-        strategy: 'Competitive but profitable bid (fallback)',
+        strategy: 'Oferta competitiva pero rentable (valores por defecto)',
         tips: [
-          'Bid 10-15% below average to increase chances',
-          'Respond quickly to stand out',
-          'Highlight relevant specific skills'
+          'Oferta 10-15% por debajo del promedio para aumentar oportunidades',
+          'Responde rápidamente para destacar',
+          'Destaca habilidades específicas relevantes'
         ]
       })
     } finally {

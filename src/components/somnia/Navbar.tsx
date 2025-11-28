@@ -49,6 +49,7 @@ export default function Navbar() {
         // GigStream Dashboard Menu
         { name: 'Home', href: '/', icon: Home },
         { name: 'Dashboard', href: '/gigstream', icon: Briefcase },
+        { name: 'My Jobs', href: '/gigstream/my-jobs', icon: Briefcase },
         { name: 'Post Job', href: '/gigstream/post', icon: Plus },
         { name: 'Profile', href: '/gigstream/profile', icon: User }
       ]
@@ -61,6 +62,7 @@ export default function Navbar() {
           icon: Briefcase,
           submenu: [
             { name: 'Dashboard', href: '/gigstream', icon: Briefcase },
+            { name: 'My Jobs', href: '/gigstream/my-jobs', icon: Briefcase },
             { name: 'Post Job', href: '/gigstream/post', icon: Plus },
             { name: 'Profile', href: '/gigstream/profile', icon: User }
           ]

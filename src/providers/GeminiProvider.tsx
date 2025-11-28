@@ -1,29 +1,27 @@
-// src/providers/GeminiProvider.tsx - Gemini 2.5 Flash + Fallbacks
+// src/providers/GeminiProvider.tsx - Client-side Gemini API Provider
+// Note: Model fallback is handled server-side in /api/gemini route
 'use client'
 
-import { createContext, useContext, ReactNode, useCallback, useState } from 'react'
+import { createContext, useContext, ReactNode, useCallback } from 'react'
 
 const GeminiContext = createContext<any>(null)
 
-const models = [
-  'gemini-2.5-flash',    // Primary ✅
-  'gemini-2.5-pro',      // Fallback 1 ✅
-  'gemini-2.0-flash',    // Fallback 2 ✅
-  'gemini-1.5-flash',    // Fallback 3 ✅
-  'gemini-1.5-pro'       // Fallback 4 ✅
-]
-
 export function GeminiProvider({ children }: { children: ReactNode }) {
-  const generateText = useCallback(async (prompt: string, retries = 0): Promise<string> => {
+  const generateText = useCallback(async (prompt: string, context?: string): Promise<string> => {
     try {
-      const response = await fetch('/api/gemini', {
+      // Use absolute URL in production to avoid CORS issues
+      const apiUrl = process.env.NODE_ENV === 'production' 
+        ? `${process.env.NEXT_PUBLIC_APP_URL || 'https://gigstream-mx.vercel.app'}/api/gemini`
+        : '/api/gemini'
+      
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           prompt,
-          context: 'Mexico freelance marketplace, 56M informal workers'
+          context: context || 'Mexico freelance marketplace, 56M informal workers. Built on Somnia Network L1 blockchain with real-time Data Streams.'
         }),
       })
 
@@ -33,7 +31,17 @@ export function GeminiProvider({ children }: { children: ReactNode }) {
         
         // Don't retry if API key is not configured (503 status)
         if (response.status === 503 && errorMessage.includes('API key')) {
-          throw new Error(errorMessage)
+          throw new Error('Gemini AI no está configurado. Por favor contacta al soporte.')
+        }
+        
+        // Handle rate limits
+        if (response.status === 429) {
+          throw new Error('Límite de solicitudes excedido. Por favor intenta más tarde.')
+        }
+        
+        // Handle timeouts
+        if (response.status === 504) {
+          throw new Error('Tiempo de espera agotado. Por favor intenta de nuevo.')
         }
         
         throw new Error(errorMessage)
@@ -45,24 +53,19 @@ export function GeminiProvider({ children }: { children: ReactNode }) {
       if (!data.success) {
         // Don't retry if API key is not configured
         if (data.error?.includes('API key') || data.error?.includes('not configured')) {
-          throw new Error(data.error || 'Gemini API key not configured')
+          throw new Error('Gemini AI no está configurado. Por favor contacta al soporte.')
         }
-        throw new Error(data.error || 'Gemini API error')
+        throw new Error(data.error || 'Error en la API de Gemini')
       }
       
       // Return text response (provider expects string)
       return data.response || data.text || data.data || ''
     } catch (error: any) {
-      // Don't retry on configuration errors (503) or API key errors
-      if (error?.message?.includes('API key') || error?.message?.includes('not configured')) {
+      // Re-throw with user-friendly message
+      if (error.message) {
         throw error
       }
-      
-      if (retries < models.length - 1) {
-        console.warn(`Model ${models[retries]} failed, trying fallback ${retries + 1}`)
-        return generateText(prompt, retries + 1)
-      }
-      throw new Error('All Gemini models failed')
+      throw new Error('Error al conectar con Gemini AI. Por favor intenta más tarde.')
     }
   }, [])
 

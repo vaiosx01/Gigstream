@@ -9,16 +9,43 @@ export const runtime = 'nodejs'
 
 export async function GET(req: NextRequest) {
   try {
+    // Check API key first
+    const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY
+    if (!apiKey) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Gemini API key not configured',
+          configuration: {
+            apiKeyConfigured: false,
+            envVarUsed: null,
+            runtime: 'nodejs'
+          },
+          timestamp: new Date().toISOString()
+        },
+        { status: 503 }
+      )
+    }
+    
     // Test 1: Simple text generation
     const testPrompt = 'Respond with "OK" if you can read this message. Include your model name.'
     
-    const result = await callGemini(testPrompt, { returnRawText: true })
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Test timeout')), 30000)
+    )
+    
+    const resultPromise = callGemini(testPrompt, { returnRawText: true })
+    const result = await Promise.race([resultPromise, timeoutPromise]) as any
     
     // Test 2: JSON generation (if first test passes)
     let jsonTest = null
     try {
       const jsonPrompt = 'Generate a simple JSON: {"status": "ok", "test": true, "timestamp": "2025-11-01"}'
-      jsonTest = await callGeminiJSON(jsonPrompt)
+      const jsonPromise = callGeminiJSON(jsonPrompt)
+      const jsonTimeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('JSON test timeout')), 30000)
+      )
+      jsonTest = await Promise.race([jsonPromise, jsonTimeoutPromise])
     } catch (jsonError) {
       console.warn('[TEST] JSON test failed:', jsonError)
     }

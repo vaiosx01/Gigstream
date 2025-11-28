@@ -2,14 +2,15 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { MapPin, DollarSign, Clock, User, CheckCircle, XCircle, Zap } from 'lucide-react'
+import { MapPin, DollarSign, Clock, User, CheckCircle, XCircle, Zap, Database } from 'lucide-react'
 import { formatEther } from 'viem'
 import { useJob } from '@/hooks/useJob'
 import { useGigStream } from '@/hooks/useGigStream'
 import { useAccount } from 'wagmi'
 import Link from 'next/link'
 import { formatDistanceToNow } from 'date-fns'
-import { es } from 'date-fns/locale'
+import { enUS } from 'date-fns/locale'
+import { useState, useEffect } from 'react'
 
 interface JobCardProps {
   jobId: bigint
@@ -19,6 +20,29 @@ interface JobCardProps {
 export default function JobCard({ jobId, onClick }: JobCardProps) {
   const { job, isLoading } = useJob(jobId)
   const { address } = useAccount()
+  const [isInSDS, setIsInSDS] = useState(false)
+
+  // Check if this job is in Data Streams (optional enhancement)
+  useEffect(() => {
+    if (!job?.employer) return
+
+    const checkSDS = async () => {
+      try {
+        const response = await fetch(`/api/sds/read-jobs?publisher=${job.employer}&limit=100`)
+        if (response.ok) {
+          const data = await response.json()
+          const jobInSDS = data.jobs?.some((sdsJob: any) => 
+            sdsJob.jobId?.toString() === jobId.toString()
+          )
+          setIsInSDS(jobInSDS || false)
+        }
+      } catch (error) {
+        // Silently fail - SDS check is optional
+      }
+    }
+
+    checkSDS()
+  }, [job?.employer, jobId])
 
   if (isLoading || !job) {
     return (
@@ -50,6 +74,11 @@ export default function JobCard({ jobId, onClick }: JobCardProps) {
         <div className="flex items-start justify-between mb-4">
           <h3 className="text-xl font-bold text-white flex-1">{job.title}</h3>
           <div className="flex items-center space-x-2">
+            {isInSDS && (
+              <div title="Available in Somnia Data Streams">
+                <Database className="w-4 h-4 text-somnia-cyan" />
+              </div>
+            )}
             {job.completed && (
               <CheckCircle className="w-5 h-5 text-mx-green" />
             )}
@@ -78,37 +107,37 @@ export default function JobCard({ jobId, onClick }: JobCardProps) {
             <Clock className="w-4 h-4" />
             <span>
               {job.deadline > BigInt(Math.floor(Date.now() / 1000))
-                ? `Deadline: ${formatDistanceToNow(deadlineDate, { addSuffix: true, locale: es })}`
-                : 'Deadline pasado'}
+                ? `Deadline: ${formatDistanceToNow(deadlineDate, { addSuffix: true, locale: enUS })}`
+                : 'Deadline passed'}
             </span>
           </div>
           {isAssigned && (
             <div className="flex items-center space-x-2 text-somnia-cyan">
               <User className="w-4 h-4" />
-              <span>Asignado a: {job.worker.slice(0, 6)}...{job.worker.slice(-4)}</span>
+              <span>Assigned to: {job.worker.slice(0, 6)}...{job.worker.slice(-4)}</span>
             </div>
           )}
         </div>
 
         <div className="flex items-center justify-between pt-4 border-t border-white/10">
           <div className="text-xs text-white/50 font-mono">
-            {formatDistanceToNow(createdAtDate, { addSuffix: true, locale: es })}
+            {formatDistanceToNow(createdAtDate, { addSuffix: true, locale: enUS })}
           </div>
           <div className="flex items-center space-x-2">
             {isEmployer && !job.completed && !job.cancelled && (
               <span className="text-xs bg-somnia-purple/30 px-2 py-1 rounded-full text-white">
-                Mi trabajo
+                My Job
               </span>
             )}
             {isWorker && !job.completed && (
               <span className="text-xs bg-mx-green/30 px-2 py-1 rounded-full text-white">
-                Asignado
+                Assigned
               </span>
             )}
             {!isEmployer && !isWorker && !isAssigned && !job.completed && !job.cancelled && (
               <span className="text-xs bg-somnia-cyan/30 px-2 py-1 rounded-full text-white flex items-center space-x-1">
                 <Zap className="w-3 h-3" />
-                <span>Disponible</span>
+                <span>Available</span>
               </span>
             )}
           </div>

@@ -108,12 +108,20 @@ export default function AIJobMatcher() {
       }))
     } catch (error: any) {
       console.error('Error analyzing matches:', error)
-      setError(error.message || 'Error analyzing matches')
+      const errorMessage = error?.message || 'Error al analizar coincidencias'
+      
+      // Check if it's a configuration error
+      if (errorMessage.includes('no está configurado') || errorMessage.includes('not configured')) {
+        setError('Gemini AI no está configurado. Usando valores por defecto.')
+      } else {
+        setError(errorMessage)
+      }
+      
       // Fallback scores
       setJobs(prev => prev.map((job, idx) => ({
         ...job,
         matchScore: [92, 78, 65][idx],
-        reason: ['Excellent match by location and skill (fallback)', 'Good opportunity, requires travel', 'Moderate match, different skill'][idx]
+        reason: ['Excelente coincidencia por ubicación y habilidad (por defecto)', 'Buena oportunidad, requiere viaje', 'Coincidencia moderada, habilidad diferente'][idx]
       })))
     } finally {
       setIsAnalyzing(false)
