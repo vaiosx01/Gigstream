@@ -19,6 +19,7 @@ import { useGigStream } from '@/hooks/useGigStream'
 import { useSDSJobs } from '@/hooks/useSDSJobs'
 import JobCard from '@/components/gigstream/JobCard'
 import SDSJobsIndicator from '@/components/gigstream/SDSJobsIndicator'
+import LiveEventsPanel from '@/components/gigstream/LiveEventsPanel'
 
 type ProfileType = 'worker' | 'employer'
 
@@ -334,20 +335,7 @@ export default function GigStreamDashboard() {
                   </motion.div>
                 </Link>
               )}
-              <div className="backdrop-blur-xl bg-gradient-to-r from-neural-blue/20 to-somnia-purple/20 rounded-3xl p-8 border border-neural-blue/30 shadow-neural-glow">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-2xl font-bold text-white">Live Streams</h3>
-                  {sdsJobs.length > 0 && (
-                    <SDSJobsIndicator publisher={address} showCount={false} />
-                  )}
-                </div>
-                <p className="text-white/70 font-mono">SDS active • {jobsCount} events</p>
-                {sdsJobs.length > 0 && (
-                  <p className="text-xs text-somnia-cyan/80 font-mono mt-2">
-                    {sdsJobs.length} job{sdsJobs.length !== 1 ? 's' : ''} in Data Streams
-                  </p>
-                )}
-              </div>
+              <LiveEventsPanel maxEvents={10} />
             </div>
           </div>
         )}

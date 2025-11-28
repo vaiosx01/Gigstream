@@ -7,10 +7,14 @@ import { privateKeyToAccount } from 'viem/accounts'
 import { SOMNIA_CONFIG } from './contracts'
 
 /**
- * Job Data Stream Schema
- * Defines the structure for job data in Somnia Data Streams
+ * Data Stream Schemas
+ * Defines the structure for all event data in Somnia Data Streams
  */
 export const JOB_SCHEMA = 'uint256 jobId, address employer, string title, string location, uint256 reward, uint256 deadline, uint64 timestamp'
+export const BID_SCHEMA = 'uint256 jobId, address worker, uint256 bid, uint64 timestamp'
+export const JOB_COMPLETED_SCHEMA = 'uint256 jobId, address worker, uint256 reward, uint64 timestamp'
+export const JOB_CANCELLED_SCHEMA = 'uint256 jobId, address employer, uint256 refundAmount, uint64 timestamp'
+export const REPUTATION_SCHEMA = 'address user, uint256 reputation, uint64 timestamp'
 
 /**
  * Initialize Somnia SDS SDK with public client only (for reading)
@@ -93,56 +97,7 @@ export async function getJobSchemaId(): Promise<`0x${string}`> {
  * Register job schema if not already registered
  */
 export async function registerJobSchema(sdk: SDK): Promise<`0x${string}`> {
-  // Compute schema ID
-  const schemaIdResult = await sdk.streams.computeSchemaId(JOB_SCHEMA)
-  if (schemaIdResult instanceof Error) {
-    throw schemaIdResult
-  }
-  const schemaId = schemaIdResult
-
-  // Check if schema is already registered
-  const existsResult = await sdk.streams.isDataSchemaRegistered(schemaId)
-  if (existsResult instanceof Error) {
-    throw existsResult
-  }
-  const exists = existsResult
-  
-  if (!exists) {
-    // Register the schema
-    const txResult = await sdk.streams.registerDataSchemas([
-      {
-        schemaName: 'GigStreamJob',
-        schema: JOB_SCHEMA,
-        parentSchemaId: zeroBytes32 as `0x${string}`,
-      }
-    ])
-    
-    if (txResult instanceof Error) {
-      throw txResult
-    }
-    
-    // Wait for transaction receipt
-    const { waitForTransactionReceipt } = await import('viem/actions')
-    // Get public client from SDK - need to access it differently
-    // The SDK uses a Client internally, we need to pass the public client separately
-    const publicClient = createPublicClient({
-      chain: {
-        id: SOMNIA_CONFIG.chainId,
-        name: SOMNIA_CONFIG.name,
-        nativeCurrency: SOMNIA_CONFIG.nativeCurrency,
-        rpcUrls: {
-          default: {
-            http: [SOMNIA_CONFIG.rpcUrl],
-          },
-        },
-      },
-      transport: http(SOMNIA_CONFIG.rpcUrl),
-    })
-    
-    await waitForTransactionReceipt(publicClient, { hash: txResult })
-  }
-  
-  return schemaId
+  return registerSchema(sdk, JOB_SCHEMA, 'GigStreamJob')
 }
 
 /**
@@ -191,6 +146,186 @@ export async function publishJobToDataStream(
   const txResult = await sdk.streams.set(
     [{ id: dataId, schemaId, data }]
   )
+
+  if (txResult instanceof Error) {
+    throw txResult
+  }
+
+  return txResult
+}
+
+/**
+ * Register schema helper (generic)
+ */
+async function registerSchema(sdk: SDK, schema: string, schemaName: string): Promise<`0x${string}`> {
+  const schemaIdResult = await sdk.streams.computeSchemaId(schema)
+  if (schemaIdResult instanceof Error) {
+    throw schemaIdResult
+  }
+  const schemaId = schemaIdResult
+
+  const existsResult = await sdk.streams.isDataSchemaRegistered(schemaId)
+  if (existsResult instanceof Error) {
+    throw existsResult
+  }
+  const exists = existsResult
+  
+  if (!exists) {
+    const txResult = await sdk.streams.registerDataSchemas([
+      {
+        schemaName,
+        schema,
+        parentSchemaId: zeroBytes32 as `0x${string}`,
+      }
+    ])
+    
+    if (txResult instanceof Error) {
+      throw txResult
+    }
+    
+    const { waitForTransactionReceipt } = await import('viem/actions')
+    const publicClient = createPublicClient({
+      chain: {
+        id: SOMNIA_CONFIG.chainId,
+        name: SOMNIA_CONFIG.name,
+        nativeCurrency: SOMNIA_CONFIG.nativeCurrency,
+        rpcUrls: {
+          default: {
+            http: [SOMNIA_CONFIG.rpcUrl],
+          },
+        },
+      },
+      transport: http(SOMNIA_CONFIG.rpcUrl),
+    })
+    
+    await waitForTransactionReceipt(publicClient, { hash: txResult })
+  }
+  
+  return schemaId
+}
+
+/**
+ * Publish bid data to Somnia Data Streams
+ */
+export async function publishBidToDataStream(
+  sdk: SDK,
+  bidData: {
+    jobId: bigint | string
+    worker: `0x${string}`
+    bid: bigint | string
+    timestamp?: number
+  }
+): Promise<`0x${string}` | null> {
+  const schemaId = await registerSchema(sdk, BID_SCHEMA, 'GigStreamBid') as `0x${string}`
+  const encoder = new SchemaEncoder(BID_SCHEMA)
+  const timestamp = bidData.timestamp || Math.floor(Date.now() / 1000)
+  
+  const data = encoder.encodeData([
+    { name: 'jobId', value: bidData.jobId.toString(), type: 'uint256' },
+    { name: 'worker', value: bidData.worker, type: 'address' },
+    { name: 'bid', value: bidData.bid.toString(), type: 'uint256' },
+    { name: 'timestamp', value: timestamp.toString(), type: 'uint64' },
+  ])
+
+  const dataId = toHex(`bid-${bidData.jobId}-${bidData.worker}-${timestamp}`, { size: 32 })
+  const txResult = await sdk.streams.set([{ id: dataId, schemaId, data }])
+
+  if (txResult instanceof Error) {
+    throw txResult
+  }
+
+  return txResult
+}
+
+/**
+ * Publish job completion data to Somnia Data Streams
+ */
+export async function publishJobCompletedToDataStream(
+  sdk: SDK,
+  completionData: {
+    jobId: bigint | string
+    worker: `0x${string}`
+    reward: bigint | string
+    timestamp?: number
+  }
+): Promise<`0x${string}` | null> {
+  const schemaId = await registerSchema(sdk, JOB_COMPLETED_SCHEMA, 'GigStreamJobCompleted') as `0x${string}`
+  const encoder = new SchemaEncoder(JOB_COMPLETED_SCHEMA)
+  const timestamp = completionData.timestamp || Math.floor(Date.now() / 1000)
+  
+  const data = encoder.encodeData([
+    { name: 'jobId', value: completionData.jobId.toString(), type: 'uint256' },
+    { name: 'worker', value: completionData.worker, type: 'address' },
+    { name: 'reward', value: completionData.reward.toString(), type: 'uint256' },
+    { name: 'timestamp', value: timestamp.toString(), type: 'uint64' },
+  ])
+
+  const dataId = toHex(`completed-${completionData.jobId}-${timestamp}`, { size: 32 })
+  const txResult = await sdk.streams.set([{ id: dataId, schemaId, data }])
+
+  if (txResult instanceof Error) {
+    throw txResult
+  }
+
+  return txResult
+}
+
+/**
+ * Publish job cancellation data to Somnia Data Streams
+ */
+export async function publishJobCancelledToDataStream(
+  sdk: SDK,
+  cancellationData: {
+    jobId: bigint | string
+    employer: `0x${string}`
+    refundAmount: bigint | string
+    timestamp?: number
+  }
+): Promise<`0x${string}` | null> {
+  const schemaId = await registerSchema(sdk, JOB_CANCELLED_SCHEMA, 'GigStreamJobCancelled') as `0x${string}`
+  const encoder = new SchemaEncoder(JOB_CANCELLED_SCHEMA)
+  const timestamp = cancellationData.timestamp || Math.floor(Date.now() / 1000)
+  
+  const data = encoder.encodeData([
+    { name: 'jobId', value: cancellationData.jobId.toString(), type: 'uint256' },
+    { name: 'employer', value: cancellationData.employer, type: 'address' },
+    { name: 'refundAmount', value: cancellationData.refundAmount.toString(), type: 'uint256' },
+    { name: 'timestamp', value: timestamp.toString(), type: 'uint64' },
+  ])
+
+  const dataId = toHex(`cancelled-${cancellationData.jobId}-${timestamp}`, { size: 32 })
+  const txResult = await sdk.streams.set([{ id: dataId, schemaId, data }])
+
+  if (txResult instanceof Error) {
+    throw txResult
+  }
+
+  return txResult
+}
+
+/**
+ * Publish reputation update data to Somnia Data Streams
+ */
+export async function publishReputationUpdatedToDataStream(
+  sdk: SDK,
+  reputationData: {
+    user: `0x${string}`
+    reputation: bigint | string
+    timestamp?: number
+  }
+): Promise<`0x${string}` | null> {
+  const schemaId = await registerSchema(sdk, REPUTATION_SCHEMA, 'GigStreamReputation') as `0x${string}`
+  const encoder = new SchemaEncoder(REPUTATION_SCHEMA)
+  const timestamp = reputationData.timestamp || Math.floor(Date.now() / 1000)
+  
+  const data = encoder.encodeData([
+    { name: 'user', value: reputationData.user, type: 'address' },
+    { name: 'reputation', value: reputationData.reputation.toString(), type: 'uint256' },
+    { name: 'timestamp', value: timestamp.toString(), type: 'uint64' },
+  ])
+
+  const dataId = toHex(`reputation-${reputationData.user}-${timestamp}`, { size: 32 })
+  const txResult = await sdk.streams.set([{ id: dataId, schemaId, data }])
 
   if (txResult instanceof Error) {
     throw txResult

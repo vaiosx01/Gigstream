@@ -21,6 +21,7 @@ import { useState, useEffect } from 'react'
 import WorkerSearch from '@/components/gigstream/WorkerSearch'
 import ContractFunctionChecker from '@/components/gigstream/ContractFunctionChecker'
 import ContractAddressVerifier from '@/components/gigstream/ContractAddressVerifier'
+import LiveEventsPanel from '@/components/gigstream/LiveEventsPanel'
 
 export default function JobDetailPage() {
   const params = useParams()
@@ -643,6 +644,16 @@ export default function JobDetailPage() {
               )}
             </motion.div>
           )}
+
+          {/* Live Events Panel */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="mt-8"
+          >
+            <LiveEventsPanel maxEvents={5} />
+          </motion.div>
         </div>
       </main>
       <Footer />

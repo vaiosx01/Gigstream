@@ -373,9 +373,11 @@ const jobs = await readJobsFromDataStream(sdk, {
 
 **Real-time Event Streaming** (Server-Sent Events):
 ```
-GET /api/streams?type=jobs      # Job postings stream
-GET /api/streams?type=bids     # Bids stream
+GET /api/streams?type=jobs          # Job postings stream
+GET /api/streams?type=bids          # Bids stream
 GET /api/streams?type=completions  # Job completions stream
+GET /api/streams?type=cancellations # Job cancellations stream
+GET /api/streams?type=reputation    # Reputation updates stream
 ```
 
 **Data Streams API** (Structured Data Queries):
@@ -389,17 +391,20 @@ POST /api/sds/publish-job                        # Publish job to Data Streams (
 | Event | Description | Real-time | Data Streams |
 |-------|-------------|-----------|--------------|
 | **JobPosted** | New jobs appear instantly | ✅ Yes | ✅ Published |
-| **BidPlaced** | Bids stream in real-time | ✅ Yes | ⏳ Coming |
-| **JobCompleted** | Completion events streamed | ✅ Yes | ⏳ Coming |
-| **JobCancelled** | Cancellation events | ✅ Yes | ⏳ Coming |
-| **ReputationUpdated** | Reputation changes | ✅ Yes | ⏳ Coming |
+| **BidPlaced** | Bids stream in real-time | ✅ Yes | ✅ Published |
+| **JobCompleted** | Completion events streamed | ✅ Yes | ✅ Published |
+| **JobCancelled** | Cancellation events | ✅ Yes | ✅ Published |
+| **ReputationUpdated** | Reputation changes | ✅ Yes | ✅ Published |
 
 ### Frontend Integration
 
 - **`useSDSJobs` Hook**: Fetch jobs from Data Streams in React components
+- **`useEventStream` Hook**: Consume real-time Server-Sent Events streams for all event types
+- **`LiveEventsPanel` Component**: Visual panel displaying live events (JobPosted, BidPlaced, JobCompleted, JobCancelled, ReputationUpdated) in real-time
 - **`SDSJobsIndicator` Component**: Visual indicator for Data Streams availability
-- **Automatic Publishing**: Jobs automatically published to Data Streams when created
+- **Automatic Publishing**: All events automatically published to Data Streams when they occur
 - **Dual Source Display**: Shows jobs from both contract and Data Streams
+- **Real-time Updates**: All hooks listen to contract events and SSE streams for instant UI updates
 
 ---
 
@@ -548,9 +553,11 @@ pnpm run test:coverage
 ### How We Use Somnia Data Streams
 
 1. **Real-Time Job Postings**: Jobs are automatically published to Data Streams when created on-chain, enabling instant discovery without polling
-2. **Live Event Streaming**: All contract events (JobPosted, BidPlaced, JobCompleted) are streamed in real-time via Server-Sent Events
-3. **Structured Data Queries**: Jobs can be queried efficiently by publisher, location, or status using Data Streams' structured query capabilities
-4. **Reactive UI**: Frontend reacts instantly to on-chain changes through Data Streams, providing a seamless real-time experience
+2. **Live Event Streaming**: All contract events (JobPosted, BidPlaced, JobCompleted, JobCancelled, ReputationUpdated) are streamed in real-time via Server-Sent Events
+3. **Complete Event Publishing**: Every on-chain event is automatically published to Data Streams with structured schemas, enabling efficient queries and indexing
+4. **Structured Data Queries**: All events can be queried efficiently by publisher, jobId, or other fields using Data Streams' structured query capabilities
+5. **Reactive UI**: Frontend reacts instantly to on-chain changes through Data Streams, providing a seamless real-time experience
+6. **Multiple Schemas**: Each event type has its own schema (Job, Bid, Completion, Cancellation, Reputation) for optimal data structure
 
 ### Submission Checklist
 
