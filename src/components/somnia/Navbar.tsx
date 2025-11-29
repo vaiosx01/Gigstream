@@ -270,21 +270,22 @@ export default function Navbar() {
       <AnimatePresence>
         {isMenuOpen && (
           <>
-            {/* Backdrop overlay */}
+            {/* Backdrop overlay - Completely solid */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMenuOpen(false)}
-              className="lg:hidden fixed inset-0 bg-black/80 z-[45]"
+              className="lg:hidden fixed inset-0 bg-black z-[45]"
             />
-            {/* Mobile Menu Panel */}
+            {/* Mobile Menu Panel - Completely solid */}
             <motion.div
               initial={{ x: '-100%' }}
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="lg:hidden fixed inset-y-0 left-0 w-[85vw] max-w-sm bg-somnia-dark z-[50] shadow-2xl border-r border-somnia-cyan/20"
+              className="lg:hidden fixed inset-y-0 left-0 w-[85vw] max-w-sm z-[50] shadow-2xl border-r border-somnia-cyan/20"
+              style={{ backgroundColor: 'hsl(var(--somnia-dark))' }}
             >
               {/* Mobile Menu Header */}
               <div className="flex items-center justify-between p-4 sm:p-6 border-b border-white/10">
