@@ -81,28 +81,28 @@ export default function Navbar() {
           : 'backdrop-blur-md bg-somnia-dark/40'
       }`}
     >
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group">
+          <Link href="/" className="flex items-center space-x-2 sm:space-x-3 group">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-[#00D4FF] to-[#7B00FF] rounded-lg blur-md opacity-50 group-hover:opacity-75 transition-opacity" />
-              <div className="relative w-10 h-10 bg-gradient-to-br from-[#00D4FF] to-[#7B00FF] rounded-lg flex items-center justify-center">
-                <Zap className="w-6 h-6 text-white" />
+              <div className="relative w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-[#00D4FF] to-[#7B00FF] rounded-lg flex items-center justify-center">
+                <Zap className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
               </div>
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-black bg-gradient-to-r from-[#00D4FF] to-[#7B00FF] bg-clip-text text-transparent leading-tight">
+              <span className="text-lg sm:text-xl font-black bg-gradient-to-r from-[#00D4FF] to-[#7B00FF] bg-clip-text text-transparent leading-tight">
                 GigStream
               </span>
               {!isGigStreamPage && (
-                <span className="text-xs text-white/60 font-medium">Powered by Somnia</span>
+                <span className="hidden xs:block text-xs text-white/60 font-medium">Powered by Somnia</span>
               )}
             </div>
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
             {menuItems.map((item) => (
               <div
                 key={item.name}
@@ -196,17 +196,17 @@ export default function Navbar() {
           </div>
 
           {/* Right Side Actions */}
-          <div className="hidden lg:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-3 xl:space-x-4">
             {isConnected ? (
-              <div className="flex items-center space-x-3">
-                <div className="px-4 py-2 bg-gradient-to-r from-[#00D4FF]/20 to-[#7B00FF]/20 border border-somnia-cyan/30 rounded-xl">
-                  <span className="text-[#00D4FF] font-mono text-sm">
+              <div className="flex items-center space-x-2 xl:space-x-3">
+                <div className="px-3 xl:px-4 py-2 bg-gradient-to-r from-[#00D4FF]/20 to-[#7B00FF]/20 border border-somnia-cyan/30 rounded-xl">
+                  <span className="text-[#00D4FF] font-mono text-xs xl:text-sm">
                     {address?.slice(0, 6)}...{address?.slice(-4)}
                   </span>
                 </div>
                 <motion.button
                   onClick={() => disconnect()}
-                  className="px-6 py-2 bg-gradient-to-r from-[#00D4FF] to-[#7B00FF] rounded-xl text-white font-bold text-sm hover:shadow-neural-glow transition-all"
+                  className="px-4 xl:px-6 py-2 bg-gradient-to-r from-[#00D4FF] to-[#7B00FF] rounded-xl text-white font-bold text-xs xl:text-sm hover:shadow-neural-glow transition-all"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -219,18 +219,19 @@ export default function Navbar() {
                 {isGigStreamPage ? (
                   <Link href="/gigstream/post">
                     <motion.button
-                      className="px-6 py-2 bg-gradient-to-r from-[#00D4FF] to-[#7B00FF] rounded-xl text-white font-bold text-sm hover:shadow-neural-glow transition-all flex items-center space-x-2"
+                      className="px-4 xl:px-6 py-2 bg-gradient-to-r from-[#00D4FF] to-[#7B00FF] rounded-xl text-white font-bold text-xs xl:text-sm hover:shadow-neural-glow transition-all flex items-center space-x-2"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
                       <Plus className="w-4 h-4" />
-                      <span>Post Job</span>
+                      <span className="hidden xl:inline">Post Job</span>
+                      <span className="xl:hidden">Post</span>
                     </motion.button>
                   </Link>
                 ) : (
                   <Link href="/gigstream">
                     <motion.button
-                      className="px-6 py-2 bg-gradient-to-r from-[#00D4FF] to-[#7B00FF] rounded-xl text-white font-bold text-sm hover:shadow-neural-glow transition-all"
+                      className="px-4 xl:px-6 py-2 bg-gradient-to-r from-[#00D4FF] to-[#7B00FF] rounded-xl text-white font-bold text-xs xl:text-sm hover:shadow-neural-glow transition-all"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -245,7 +246,7 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden text-white p-2"
+            className="lg:hidden text-white p-2 hover:bg-white/10 rounded-lg transition-colors"
             aria-label="Toggle menu"
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -267,7 +268,7 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="h-full overflow-y-auto px-6 py-8"
+              className="h-full overflow-y-auto px-4 sm:px-6 py-6 sm:py-8"
             >
               {menuItems.map((item, idx) => (
                 <motion.div
@@ -275,7 +276,7 @@ export default function Navbar() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: idx * 0.1 }}
-                  className="mb-6"
+                  className="mb-4 sm:mb-6"
                 >
                   <Link
                     href={item.href}
@@ -302,13 +303,13 @@ export default function Navbar() {
                         setIsMenuOpen(false)
                       }
                     }}
-                    className="text-2xl font-bold text-white hover:text-[#00D4FF] transition-colors mb-2 flex items-center space-x-2"
+                    className="text-xl sm:text-2xl font-bold text-white hover:text-[#00D4FF] transition-colors mb-2 flex items-center space-x-2"
                   >
-                    {item.icon && <item.icon className="w-6 h-6" />}
+                    {item.icon && <item.icon className="w-5 h-5 sm:w-6 sm:h-6" />}
                     <span>{item.name}</span>
                   </Link>
                   {item.submenu && (
-                    <div className="ml-4 space-y-2">
+                    <div className="ml-4 sm:ml-6 space-y-2 mt-2">
                       {item.submenu.map((sub) => (
                         <Link
                           key={sub.name}
@@ -339,7 +340,7 @@ export default function Navbar() {
                               }
                             }
                           }}
-                          className="text-white/70 hover:text-[#00D4FF] transition-colors flex items-center space-x-2"
+                          className="text-base sm:text-lg text-white/70 hover:text-[#00D4FF] transition-colors flex items-center space-x-2 py-1"
                         >
                           {sub.icon && <sub.icon className="w-4 h-4" />}
                           <span>{sub.name}</span>
@@ -349,7 +350,7 @@ export default function Navbar() {
                   )}
                 </motion.div>
               ))}
-              <div className="mt-8 space-y-4">
+              <div className="mt-6 sm:mt-8 space-y-3 sm:space-y-4">
                 {!isConnected && (
                   <div className="w-full">
                     <appkit-button />
@@ -358,7 +359,7 @@ export default function Navbar() {
                 {isGigStreamPage ? (
                   <Link href="/gigstream/post" onClick={() => setIsMenuOpen(false)}>
                     <motion.button
-                      className="w-full px-6 py-3 bg-gradient-to-r from-[#00D4FF] to-[#7B00FF] rounded-xl text-white font-bold flex items-center justify-center space-x-2"
+                      className="w-full px-6 py-3 bg-gradient-to-r from-[#00D4FF] to-[#7B00FF] rounded-xl text-white font-bold flex items-center justify-center space-x-2 text-sm sm:text-base"
                       whileTap={{ scale: 0.95 }}
                     >
                       <Plus className="w-5 h-5" />
@@ -368,7 +369,7 @@ export default function Navbar() {
                 ) : (
                   <Link href="/gigstream" onClick={() => setIsMenuOpen(false)}>
                     <motion.button
-                      className="w-full px-6 py-3 bg-gradient-to-r from-[#00D4FF] to-[#7B00FF] rounded-xl text-white font-bold"
+                      className="w-full px-6 py-3 bg-gradient-to-r from-[#00D4FF] to-[#7B00FF] rounded-xl text-white font-bold text-sm sm:text-base"
                       whileTap={{ scale: 0.95 }}
                     >
                       Get Started

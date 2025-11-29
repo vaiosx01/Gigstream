@@ -41,8 +41,8 @@ export default function Footer() {
 
   return (
     <footer className="relative bg-gradient-to-b from-somnia-dark to-black border-t border-somnia-cyan/20">
-      <div className="container mx-auto px-4 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-8 sm:mb-12">
           {/* Product */}
           <div>
             <h4 className="text-white font-bold mb-4 uppercase tracking-wide text-sm">Product</h4>
@@ -122,16 +122,16 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/10 pt-8">
-          <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-            <div className="text-white/60 text-sm text-center md:text-left">
+        <div className="border-t border-white/10 pt-6 sm:pt-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between space-y-3 sm:space-y-4 md:space-y-0">
+            <div className="text-white/60 text-xs sm:text-sm text-center sm:text-left">
               © 2025 GigStream. Built on Somnia Network.
             </div>
-            <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
-              <span className="text-white/80 text-sm font-semibold">
+            <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4 md:space-x-6">
+              <span className="text-white/80 text-xs sm:text-sm font-semibold text-center sm:text-left">
                 Made by <span className="text-somnia-cyan">Vaiosx</span> and <span className="text-somnia-cyan">M0nsxx</span>
               </span>
-              <span className="text-white/60 text-sm">Powered by Somnia Network</span>
+              <span className="text-white/60 text-xs sm:text-sm text-center sm:text-left">Powered by Somnia Network</span>
             </div>
           </div>
         </div>
@@ -145,12 +145,12 @@ export default function Footer() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0 }}
             onClick={scrollToTop}
-            className="fixed bottom-8 left-8 w-14 h-14 bg-gradient-to-r from-[#00D4FF] to-[#7B00FF] rounded-full flex items-center justify-center text-white shadow-neural-glow-lg z-50"
+            className="fixed bottom-4 left-4 sm:bottom-8 sm:left-8 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-[#00D4FF] to-[#7B00FF] rounded-full flex items-center justify-center text-white shadow-neural-glow-lg z-50"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             aria-label="Back to top"
           >
-            <ArrowUp className="w-6 h-6" />
+            <ArrowUp className="w-5 h-5 sm:w-6 sm:h-6" />
           </motion.button>
         )}
       </AnimatePresence>

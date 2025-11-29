@@ -114,57 +114,57 @@ export default function BenefitsSection() {
         />
       </div>
 
-      <div className="container mx-auto px-4 lg:px-8 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-8 sm:mb-12"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-block mb-4"
+            className="inline-block mb-3 sm:mb-4"
           >
-            <Sparkles className="w-8 h-8 text-somnia-purple mx-auto" />
+            <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-somnia-purple mx-auto" />
           </motion.div>
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-black mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-4 sm:mb-6 px-4">
             <span className="neural-text text-neural-glow-lg">
               Benefits
             </span>
           </h2>
-          <p className="text-xl md:text-2xl text-white/80 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/80 max-w-4xl mx-auto leading-relaxed px-4">
             Built for workers and employers. 
             <span className="text-somnia-cyan font-semibold"> Fair, fast, and transparent</span> with blockchain technology.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
           {/* For Workers */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ type: 'spring', stiffness: 100 }}
-            className="backdrop-blur-xl bg-white/5 border border-mx-green/20 rounded-3xl p-10 neural-hover relative overflow-hidden group"
+            className="backdrop-blur-xl bg-white/5 border border-mx-green/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 neural-hover relative overflow-hidden group"
             whileHover={{ scale: 1.02, y: -5 }}
           >
             <div className="neural-shimmer absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="absolute inset-0 bg-gradient-to-br from-mx-green/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             
             <div className="relative z-10">
-              <div className="flex items-center space-x-4 mb-8">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 mb-6 sm:mb-8">
                 <motion.div
-                  className="w-20 h-20 bg-gradient-to-br from-mx-green to-emerald-400 rounded-2xl flex items-center justify-center shadow-neural-glow"
+                  className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-mx-green to-emerald-400 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-neural-glow flex-shrink-0"
                   whileHover={{ rotate: 360, scale: 1.1 }}
                   transition={{ duration: 0.6 }}
                 >
-                  <Users className="w-10 h-10 text-white" />
+                  <Users className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
                 </motion.div>
                 <div>
-                  <h3 className="text-3xl md:text-4xl font-bold text-white mb-2">For Workers</h3>
-                  <p className="text-white/70 text-lg">Maximize your earnings and opportunities</p>
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1 sm:mb-2">For Workers</h3>
+                  <p className="text-white/70 text-base sm:text-lg">Maximize your earnings and opportunities</p>
                 </div>
               </div>
               <ul className="space-y-4">
@@ -175,17 +175,17 @@ export default function BenefitsSection() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: idx * 0.08, type: 'spring' }}
-                    className="flex items-start space-x-4 group/item"
+                    className="flex items-start space-x-3 sm:space-x-4 group/item"
                   >
                     <motion.div
                       className="flex-shrink-0 mt-1"
                       whileHover={{ scale: 1.2, rotate: 360 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <benefit.icon className="w-6 h-6 text-mx-green" />
+                      <benefit.icon className="w-5 h-5 sm:w-6 sm:h-6 text-mx-green" />
                     </motion.div>
                     <div className="flex-1">
-                      <span className="text-white/90 text-lg leading-relaxed block">
+                      <span className="text-white/90 text-base sm:text-lg leading-relaxed block">
                         {benefit.text.split(benefit.highlight).map((part, i) => (
                           <span key={i}>
                             {part}
@@ -208,24 +208,24 @@ export default function BenefitsSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ type: 'spring', stiffness: 100 }}
-            className="backdrop-blur-xl bg-white/5 border border-somnia-purple/20 rounded-3xl p-10 neural-hover relative overflow-hidden group"
+            className="backdrop-blur-xl bg-white/5 border border-somnia-purple/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 neural-hover relative overflow-hidden group"
             whileHover={{ scale: 1.02, y: -5 }}
           >
             <div className="neural-shimmer absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="absolute inset-0 bg-gradient-to-br from-somnia-purple/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             
             <div className="relative z-10">
-              <div className="flex items-center space-x-4 mb-8">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 mb-6 sm:mb-8">
                 <motion.div
-                  className="w-20 h-20 bg-gradient-to-br from-somnia-purple to-purple-400 rounded-2xl flex items-center justify-center shadow-neural-glow"
+                  className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-somnia-purple to-purple-400 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-neural-glow flex-shrink-0"
                   whileHover={{ rotate: 360, scale: 1.1 }}
                   transition={{ duration: 0.6 }}
                 >
-                  <TrendingUp className="w-10 h-10 text-white" />
+                  <TrendingUp className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
                 </motion.div>
                 <div>
-                  <h3 className="text-3xl md:text-4xl font-bold text-white mb-2">For Employers</h3>
-                  <p className="text-white/70 text-lg">Find talent instantly and efficiently</p>
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1 sm:mb-2">For Employers</h3>
+                  <p className="text-white/70 text-base sm:text-lg">Find talent instantly and efficiently</p>
                 </div>
               </div>
               <ul className="space-y-4">
@@ -236,17 +236,17 @@ export default function BenefitsSection() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: idx * 0.08, type: 'spring' }}
-                    className="flex items-start space-x-4 group/item"
+                    className="flex items-start space-x-3 sm:space-x-4 group/item"
                   >
                     <motion.div
                       className="flex-shrink-0 mt-1"
                       whileHover={{ scale: 1.2, rotate: 360 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <benefit.icon className="w-6 h-6 text-somnia-purple" />
+                      <benefit.icon className="w-5 h-5 sm:w-6 sm:h-6 text-somnia-purple" />
                     </motion.div>
                     <div className="flex-1">
-                      <span className="text-white/90 text-lg leading-relaxed block">
+                      <span className="text-white/90 text-base sm:text-lg leading-relaxed block">
                         {benefit.text.split(benefit.highlight).map((part, i) => (
                           <span key={i}>
                             {part}
@@ -269,23 +269,23 @@ export default function BenefitsSection() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-16 backdrop-blur-xl bg-gradient-to-r from-somnia-purple/20 via-somnia-cyan/20 to-mx-green/20 border border-somnia-purple/30 rounded-3xl p-8 md:p-12"
+          className="mt-12 sm:mt-16 backdrop-blur-xl bg-gradient-to-r from-somnia-purple/20 via-somnia-cyan/20 to-mx-green/20 border border-somnia-purple/30 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12"
         >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-center">
             <div>
-              <div className="text-5xl font-black neural-text mb-2">100%</div>
-              <div className="text-white/80 text-lg mb-1">Earnings Retention</div>
-              <div className="text-white/60 text-sm">Workers keep everything</div>
+              <div className="text-3xl sm:text-4xl md:text-5xl font-black neural-text mb-1 sm:mb-2">100%</div>
+              <div className="text-white/80 text-base sm:text-lg mb-1">Earnings Retention</div>
+              <div className="text-white/60 text-xs sm:text-sm">Workers keep everything</div>
             </div>
             <div>
-              <div className="text-5xl font-black neural-text mb-2">&lt;2s</div>
-              <div className="text-white/80 text-lg mb-1">Job Posting Time</div>
-              <div className="text-white/60 text-sm">Sub-second finality</div>
+              <div className="text-3xl sm:text-4xl md:text-5xl font-black neural-text mb-1 sm:mb-2">&lt;2s</div>
+              <div className="text-white/80 text-base sm:text-lg mb-1">Job Posting Time</div>
+              <div className="text-white/60 text-xs sm:text-sm">Sub-second finality</div>
             </div>
             <div>
-              <div className="text-5xl font-black neural-text mb-2">$0</div>
-              <div className="text-white/80 text-lg mb-1">Platform Fees</div>
-              <div className="text-white/60 text-sm">Zero cost model</div>
+              <div className="text-3xl sm:text-4xl md:text-5xl font-black neural-text mb-1 sm:mb-2">$0</div>
+              <div className="text-white/80 text-base sm:text-lg mb-1">Platform Fees</div>
+              <div className="text-white/60 text-xs sm:text-sm">Zero cost model</div>
             </div>
           </div>
         </motion.div>

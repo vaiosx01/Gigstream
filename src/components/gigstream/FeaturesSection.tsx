@@ -104,34 +104,34 @@ export default function FeaturesSection() {
         />
       </div>
 
-      <div className="container mx-auto px-4 lg:px-8 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-8 sm:mb-12"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-block mb-4"
+            className="inline-block mb-3 sm:mb-4"
           >
-            <Sparkles className="w-8 h-8 text-somnia-purple mx-auto" />
+            <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-somnia-purple mx-auto" />
           </motion.div>
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-black mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-4 sm:mb-6 px-4">
             <span className="neural-text text-neural-glow-lg">
               Advanced Features
             </span>
           </h2>
-          <p className="text-xl md:text-2xl text-white/80 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/80 max-w-4xl mx-auto leading-relaxed px-4">
             Enterprise-grade technology stack for real-time freelance work, 
             <span className="text-somnia-cyan font-semibold"> powered by Somnia Network</span> and 
             <span className="text-somnia-cyan font-semibold"> Google Gemini AI</span>
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {features.map((feature, idx) => (
             <motion.div
               key={feature.title}
@@ -142,11 +142,11 @@ export default function FeaturesSection() {
               className="group relative"
               whileHover={{ y: -8 }}
             >
-              <div className={`h-full backdrop-blur-xl bg-white/5 border ${feature.featured ? 'border-somnia-cyan/40' : 'border-white/10'} rounded-3xl p-8 hover:border-somnia-purple/50 transition-all duration-500 neural-hover relative overflow-hidden ${feature.glow} group-hover:shadow-neural-glow-xl`}>
+              <div className={`h-full backdrop-blur-xl bg-white/5 border ${feature.featured ? 'border-somnia-cyan/40' : 'border-white/10'} rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 hover:border-somnia-purple/50 transition-all duration-500 neural-hover relative overflow-hidden ${feature.glow} group-hover:shadow-neural-glow-xl`}>
                 {/* Featured Badge for Gemini */}
                 {feature.featured && (
-                  <div className="absolute -top-3 -right-3 px-3 py-1 bg-gradient-to-r from-somnia-cyan to-purple-400 rounded-full border-2 border-somnia-dark">
-                    <span className="text-xs font-bold text-white">AI POWERED</span>
+                  <div className="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 px-2 sm:px-3 py-0.5 sm:py-1 bg-gradient-to-r from-somnia-cyan to-purple-400 rounded-full border-2 border-somnia-dark">
+                    <span className="text-[10px] sm:text-xs font-bold text-white">AI POWERED</span>
                   </div>
                 )}
                 
@@ -158,23 +158,23 @@ export default function FeaturesSection() {
                 
                 <div className="relative z-10">
                   <motion.div
-                    className={`w-20 h-20 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-neural-glow`}
+                    className={`w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-gradient-to-br ${feature.color} rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300 shadow-neural-glow`}
                     whileHover={{ rotate: [0, -10, 10, -10, 0] }}
                     transition={{ duration: 0.5 }}
                   >
-                    <feature.icon className="w-10 h-10 text-white" />
+                    <feature.icon className="w-7 h-7 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-white" />
                   </motion.div>
                   
-                  <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-somnia-cyan transition-colors">
+                  <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-2 sm:mb-3 group-hover:text-somnia-cyan transition-colors">
                     {feature.title}
                   </h3>
                   
-                  <p className="text-white/80 leading-relaxed mb-4 text-base">
+                  <p className="text-white/80 leading-relaxed mb-3 sm:mb-4 text-sm sm:text-base">
                     {feature.description}
                   </p>
                   
-                  <div className="pt-4 border-t border-white/10">
-                    <p className="text-xs text-white/50 font-mono leading-relaxed">
+                  <div className="pt-3 sm:pt-4 border-t border-white/10">
+                    <p className="text-[10px] sm:text-xs text-white/50 font-mono leading-relaxed">
                       {feature.technical}
                     </p>
                   </div>
@@ -189,34 +189,34 @@ export default function FeaturesSection() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-16 backdrop-blur-xl bg-gradient-to-r from-somnia-purple/20 to-mx-green/20 border border-somnia-purple/30 rounded-3xl p-8 md:p-12"
+          className="mt-12 sm:mt-16 backdrop-blur-xl bg-gradient-to-r from-somnia-purple/20 to-mx-green/20 border border-somnia-purple/30 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12"
         >
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
             <div>
-              <Code className="w-12 h-12 text-somnia-cyan mx-auto mb-3" />
-              <div className="text-2xl font-black text-white mb-2">Next.js 14</div>
-              <div className="text-white/60 text-sm">React 18 • TypeScript</div>
+              <Code className="w-8 h-8 sm:w-10 sm:h-12 text-somnia-cyan mx-auto mb-2 sm:mb-3" />
+              <div className="text-lg sm:text-xl lg:text-2xl font-black text-white mb-1 sm:mb-2">Next.js 14</div>
+              <div className="text-white/60 text-xs sm:text-sm">React 18 • TypeScript</div>
             </div>
             <div>
-              <Network className="w-12 h-12 text-somnia-purple mx-auto mb-3" />
-              <div className="text-2xl font-black text-white mb-2">Somnia L1</div>
-              <div className="text-white/60 text-sm">EVM • 400k+ TPS</div>
+              <Network className="w-8 h-8 sm:w-10 sm:h-12 text-somnia-purple mx-auto mb-2 sm:mb-3" />
+              <div className="text-lg sm:text-xl lg:text-2xl font-black text-white mb-1 sm:mb-2">Somnia L1</div>
+              <div className="text-white/60 text-xs sm:text-sm">EVM • 400k+ TPS</div>
             </div>
             <div className="relative">
               <motion.div
                 whileHover={{ scale: 1.1 }}
-                className="mb-3"
+                className="mb-2 sm:mb-3"
               >
-                <Brain className="w-12 h-12 text-somnia-cyan mx-auto drop-shadow-[0_0_20px_hsl(188_100%_50%/0.6)]" />
+                <Brain className="w-8 h-8 sm:w-10 sm:h-12 text-somnia-cyan mx-auto drop-shadow-[0_0_20px_hsl(188_100%_50%/0.6)]" />
               </motion.div>
-              <div className="text-2xl font-black neural-text mb-2">Google Gemini</div>
-              <div className="text-white/80 text-sm font-semibold mb-1">AI-Powered Matching</div>
-              <div className="text-white/60 text-xs">Multi-model fallback • Real-time insights</div>
+              <div className="text-lg sm:text-xl lg:text-2xl font-black neural-text mb-1 sm:mb-2">Google Gemini</div>
+              <div className="text-white/80 text-xs sm:text-sm font-semibold mb-1">AI-Powered Matching</div>
+              <div className="text-white/60 text-[10px] sm:text-xs">Multi-model fallback • Real-time insights</div>
             </div>
             <div>
-              <Lock className="w-12 h-12 text-scroll-gold mx-auto mb-3" />
-              <div className="text-2xl font-black text-white mb-2">Hardhat</div>
-              <div className="text-white/60 text-sm">Solidity 0.8.29 • Tested</div>
+              <Lock className="w-8 h-8 sm:w-10 sm:h-12 text-scroll-gold mx-auto mb-2 sm:mb-3" />
+              <div className="text-lg sm:text-xl lg:text-2xl font-black text-white mb-1 sm:mb-2">Hardhat</div>
+              <div className="text-white/60 text-xs sm:text-sm">Solidity 0.8.29 • Tested</div>
             </div>
           </div>
         </motion.div>

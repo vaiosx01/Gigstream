@@ -68,12 +68,12 @@ export default function JobCard({ jobId, onClick }: JobCardProps) {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         whileHover={{ scale: 1.02 }}
-        className="backdrop-blur-xl bg-white/5 rounded-3xl p-6 border border-white/10 shadow-neural-glow hover:shadow-neural-glow-lg transition-all duration-300 cursor-pointer"
+        className="backdrop-blur-xl bg-white/5 rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-white/10 shadow-neural-glow hover:shadow-neural-glow-lg transition-all duration-300 cursor-pointer"
         onClick={onClick}
       >
-        <div className="flex items-start justify-between mb-4">
-          <h3 className="text-xl font-bold text-white flex-1">{job.title}</h3>
-          <div className="flex items-center space-x-2">
+        <div className="flex items-start justify-between mb-3 sm:mb-4">
+          <h3 className="text-lg sm:text-xl font-bold text-white flex-1 pr-2">{job.title}</h3>
+          <div className="flex items-center space-x-1.5 sm:space-x-2 flex-shrink-0">
             {isInSDS && (
               <div title="Available in Somnia Data Streams">
                 <Database className="w-4 h-4 text-somnia-cyan" />
@@ -94,36 +94,36 @@ export default function JobCard({ jobId, onClick }: JobCardProps) {
           </div>
         </div>
 
-        <div className="space-y-2 text-white/70 font-mono text-sm mb-4">
-          <div className="flex items-center space-x-2">
-            <MapPin className="w-4 h-4" />
-            <span>{job.location}</span>
+        <div className="space-y-1.5 sm:space-y-2 text-white/70 font-mono text-xs sm:text-sm mb-3 sm:mb-4">
+          <div className="flex items-center space-x-1.5 sm:space-x-2">
+            <MapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+            <span className="truncate">{job.location}</span>
           </div>
-          <div className="flex items-center space-x-2">
-            <DollarSign className="w-4 h-4" />
+          <div className="flex items-center space-x-1.5 sm:space-x-2">
+            <DollarSign className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
             <span className="text-mx-green font-bold">{formatEther(job.reward)} STT</span>
           </div>
-          <div className="flex items-center space-x-2">
-            <Clock className="w-4 h-4" />
-            <span>
+          <div className="flex items-center space-x-1.5 sm:space-x-2">
+            <Clock className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+            <span className="truncate">
               {job.deadline > BigInt(Math.floor(Date.now() / 1000))
                 ? `Deadline: ${formatDistanceToNow(deadlineDate, { addSuffix: true, locale: enUS })}`
                 : 'Deadline passed'}
             </span>
           </div>
           {isAssigned && (
-            <div className="flex items-center space-x-2 text-somnia-cyan">
-              <User className="w-4 h-4" />
-              <span>Assigned to: {job.worker.slice(0, 6)}...{job.worker.slice(-4)}</span>
+            <div className="flex items-center space-x-1.5 sm:space-x-2 text-somnia-cyan">
+              <User className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+              <span className="truncate">Assigned to: {job.worker.slice(0, 6)}...{job.worker.slice(-4)}</span>
             </div>
           )}
         </div>
 
-        <div className="flex items-center justify-between pt-4 border-t border-white/10">
-          <div className="text-xs text-white/50 font-mono">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 pt-3 sm:pt-4 border-t border-white/10">
+          <div className="text-[10px] sm:text-xs text-white/50 font-mono">
             {formatDistanceToNow(createdAtDate, { addSuffix: true, locale: enUS })}
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center flex-wrap gap-1.5 sm:gap-2">
             {isEmployer && !job.completed && !job.cancelled && (
               <span className="text-xs bg-somnia-purple/30 px-2 py-1 rounded-full text-white">
                 My Job

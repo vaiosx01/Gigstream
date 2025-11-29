@@ -20,7 +20,7 @@ export default function HeroSection() {
   }, [])
 
   return (
-    <section id="home" className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-20 pb-12 neural-bg">
+    <section id="home" className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-20 sm:pt-24 pb-8 sm:pb-12 neural-bg">
       <BlockchainNetwork />
       {/* Advanced Neural Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-br from-neural-blue via-somnia-purple/20 to-mx-green/10">
@@ -117,28 +117,28 @@ export default function HeroSection() {
         transition={{ type: 'spring', stiffness: 50, damping: 20 }}
       />
 
-      <div className="container mx-auto px-4 lg:px-8 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-6xl mx-auto text-center">
           {/* Badges */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="flex flex-wrap items-center justify-center gap-3 mb-8"
+            className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8"
           >
             <motion.div
-              className="inline-flex items-center gap-2 px-4 py-2 backdrop-blur-xl bg-white/5 border border-somnia-purple/30 rounded-full"
+              className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 backdrop-blur-xl bg-white/5 border border-somnia-purple/30 rounded-full"
               whileHover={{ scale: 1.05 }}
             >
-              <Sparkles className="w-4 h-4 text-somnia-purple" />
-              <span className="text-sm text-white/80">Powered by Somnia Data Streams • Sub-Second Finality</span>
+              <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-somnia-purple flex-shrink-0" />
+              <span className="text-xs sm:text-sm text-white/80">Powered by Somnia Data Streams • Sub-Second Finality</span>
             </motion.div>
             <motion.div
-              className="inline-flex items-center gap-2 px-4 py-2 backdrop-blur-xl bg-gradient-to-r from-somnia-cyan/20 to-somnia-purple/20 border border-somnia-cyan/40 rounded-full"
+              className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 backdrop-blur-xl bg-gradient-to-r from-somnia-cyan/20 to-somnia-purple/20 border border-somnia-cyan/40 rounded-full"
               whileHover={{ scale: 1.05 }}
             >
-              <Brain className="w-4 h-4 text-somnia-cyan" />
-              <span className="text-sm text-white/90 font-semibold">AI-Powered with Google Gemini</span>
+              <Brain className="w-3 h-3 sm:w-4 sm:h-4 text-somnia-cyan flex-shrink-0" />
+              <span className="text-xs sm:text-sm text-white/90 font-semibold">AI-Powered with Google Gemini</span>
             </motion.div>
           </motion.div>
 
@@ -146,15 +146,15 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-4xl md:text-5xl lg:text-7xl font-black mb-4 leading-tight"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-3 sm:mb-4 leading-tight px-2"
           >
             <span className="neural-text text-neural-glow-lg">
               GigStream
             </span>
             <br />
-            <span className="text-white">Global Real-Time Freelance Marketplace</span>
+            <span className="text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">Global Real-Time Freelance Marketplace</span>
             <br />
-            <span className="text-2xl md:text-3xl lg:text-4xl text-white/70 font-bold">
+            <span className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl text-white/70 font-bold">
               Built on Somnia Network
             </span>
           </motion.h1>
@@ -163,7 +163,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-lg md:text-xl lg:text-2xl text-white/90 mb-3 max-w-3xl mx-auto leading-relaxed font-medium"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 mb-3 max-w-3xl mx-auto leading-relaxed font-medium px-4"
           >
             Connect freelancers and workers worldwide with real-time job opportunities
           </motion.p>
@@ -172,7 +172,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-base md:text-lg text-white/70 mb-8 max-w-2xl mx-auto leading-relaxed"
+            className="text-sm sm:text-base md:text-lg text-white/70 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed px-4"
           >
             <span className="text-mx-green font-semibold">Powered by Somnia Data Streams</span> and 
             <span className="text-somnia-cyan font-semibold"> Google Gemini AI</span> – 
@@ -186,12 +186,12 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
+            className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 px-4"
           >
             {isConnected ? (
-              <Link href="/gigstream">
+              <Link href="/gigstream" className="w-full sm:w-auto">
                 <motion.button
-                  className="group px-10 py-5 bg-gradient-to-r from-somnia-purple via-somnia-cyan to-mx-green rounded-2xl text-white font-bold text-lg shadow-neural-glow-xl flex items-center space-x-3 neural-hover"
+                  className="group w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-r from-somnia-purple via-somnia-cyan to-mx-green rounded-2xl text-white font-bold text-base sm:text-lg shadow-neural-glow-xl flex items-center justify-center space-x-3 neural-hover"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   style={{
@@ -200,15 +200,17 @@ export default function HeroSection() {
                   }}
                 >
                   <span>Go to Dashboard</span>
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
                 </motion.button>
               </Link>
             ) : (
               <>
-                <appkit-button />
-                <Link href="/gigstream">
+                <div className="w-full sm:w-auto">
+                  <appkit-button />
+                </div>
+                <Link href="/gigstream" className="w-full sm:w-auto">
                   <motion.button
-                    className="px-10 py-5 bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 rounded-2xl text-white font-bold text-lg transition-all neural-hover"
+                    className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 rounded-2xl text-white font-bold text-base sm:text-lg transition-all neural-hover"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -224,7 +226,7 @@ export default function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto"
+            className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto px-4"
           >
             {[
               { icon: Users, value: 'Global', label: 'Workers', color: 'from-mx-green to-emerald-400', desc: 'Worldwide' },
@@ -237,19 +239,19 @@ export default function HeroSection() {
                 initial={{ opacity: 0, scale: 0.8, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ delay: 0.7 + idx * 0.1, type: 'spring' }}
-                className="group backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-4 neural-hover relative overflow-hidden"
+                className="group backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4 neural-hover relative overflow-hidden"
                 whileHover={{ scale: 1.05, y: -5 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-20 transition-opacity" style={{
                   background: `linear-gradient(135deg, ${stat.color.split(' ')[1]}, ${stat.color.split(' ')[3]})`
                 }} />
                 <div className="relative z-10">
-                  <div className={`w-16 h-16 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform shadow-neural-glow`}>
-                    <stat.icon className="w-8 h-8 text-white" />
+                  <div className={`w-12 h-12 sm:w-14 sm:h-16 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center mb-2 sm:mb-4 mx-auto group-hover:scale-110 transition-transform shadow-neural-glow`}>
+                    <stat.icon className="w-6 h-6 sm:w-8 text-white" />
                   </div>
-                  <div className="text-3xl font-black text-white mb-1 neural-text">{stat.value}</div>
-                  <div className="text-white/80 text-sm uppercase tracking-wide font-bold mb-1">{stat.label}</div>
-                  <div className="text-white/50 text-xs">{stat.desc}</div>
+                  <div className="text-xl sm:text-2xl md:text-3xl font-black text-white mb-1 neural-text">{stat.value}</div>
+                  <div className="text-white/80 text-xs sm:text-sm uppercase tracking-wide font-bold mb-1">{stat.label}</div>
+                  <div className="text-white/50 text-[10px] sm:text-xs">{stat.desc}</div>
                 </div>
               </motion.div>
             ))}
@@ -260,7 +262,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="flex flex-wrap items-center justify-center gap-3 mt-12"
+            className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-8 sm:mt-12 px-4"
           >
             {[
               'Zero Platform Fees',
@@ -276,7 +278,7 @@ export default function HeroSection() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.1 + idx * 0.1 }}
-                className="px-4 py-2 backdrop-blur-xl bg-white/5 border border-white/10 rounded-full text-sm text-white/80 hover:border-somnia-purple/50 transition-all"
+                className="px-3 sm:px-4 py-1.5 sm:py-2 backdrop-blur-xl bg-white/5 border border-white/10 rounded-full text-xs sm:text-sm text-white/80 hover:border-somnia-purple/50 transition-all"
               >
                 {feature}
               </motion.div>

@@ -312,21 +312,21 @@ export default function PostJob() {
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="max-w-2xl mx-auto space-y-6 md:space-y-8 p-4 md:p-8"
+          className="max-w-2xl mx-auto space-y-4 sm:space-y-6 md:space-y-8 p-4 sm:p-6 md:p-8"
         >
       {/* Header */}
       <motion.div 
-        className="backdrop-blur-xl bg-gradient-to-r from-somnia-purple/20 to-mx-green/20 rounded-3xl p-6 md:p-8 border border-somnia-purple/30 shadow-neural-glow"
+        className="backdrop-blur-xl bg-gradient-to-r from-somnia-purple/20 to-mx-green/20 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border border-somnia-purple/30 shadow-neural-glow"
         initial={{ y: 20, scale: 0.95 }}
         animate={{ y: 0, scale: 1 }}
       >
-        <div className="flex items-center space-x-4 mb-6">
-          <Zap className="w-12 h-12 text-somnia-purple shadow-neural-glow" />
-          <div>
-            <h1 className="text-3xl md:text-4xl font-black bg-gradient-to-r from-white to-somnia-purple bg-clip-text text-transparent">
+        <div className="flex items-center space-x-3 sm:space-x-4 mb-4 sm:mb-6">
+          <Zap className="w-10 h-10 sm:w-12 sm:h-12 text-somnia-purple shadow-neural-glow flex-shrink-0" />
+          <div className="min-w-0">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black bg-gradient-to-r from-white to-somnia-purple bg-clip-text text-transparent">
               Post Job
             </h1>
-            <p className="text-white/70 text-base md:text-lg mt-2">Live on SDS streams in <span className="font-mono text-mx-green">2s</span></p>
+            <p className="text-white/70 text-sm sm:text-base md:text-lg mt-1 sm:mt-2">Live on SDS streams in <span className="font-mono text-mx-green">2s</span></p>
           </div>
         </div>
         
@@ -334,7 +334,7 @@ export default function PostJob() {
         <motion.button
           onClick={generateSuggestions}
           disabled={isGenerating}
-          className="flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-somnia-purple/20 to-mx-green/20 hover:from-somnia-purple/30 hover:to-mx-green/30 backdrop-blur-xl border border-somnia-cyan/30 rounded-2xl text-white font-mono transition-all duration-300 hover:shadow-neural-glow relative overflow-hidden"
+          className="w-full sm:w-auto flex items-center justify-center space-x-2 sm:space-x-3 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-somnia-purple/20 to-mx-green/20 hover:from-somnia-purple/30 hover:to-mx-green/30 backdrop-blur-xl border border-somnia-cyan/30 rounded-xl sm:rounded-2xl text-white font-mono text-sm sm:text-base transition-all duration-300 hover:shadow-neural-glow relative overflow-hidden"
           whileHover={{ scale: 1.02 }}
         >
           {isGenerating && (
@@ -350,15 +350,15 @@ export default function PostJob() {
                 animate={{ rotate: 360 }}
                 transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
               >
-                <Bot className="w-5 h-5" />
+                <Bot className="w-4 h-4 sm:w-5 sm:h-5" />
               </motion.div>
-              <span>Gemini generating...</span>
+              <span className="text-xs sm:text-sm">Gemini generating...</span>
             </>
           ) : (
             <>
-              <Bot className="w-5 h-5" />
-              <span>Gemini AI Suggestions</span>
-              <span className="text-xs bg-gradient-to-r from-somnia-cyan to-mx-green px-2 py-0.5 rounded-full">
+              <Bot className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="text-xs sm:text-sm">Gemini AI Suggestions</span>
+              <span className="text-[10px] sm:text-xs bg-gradient-to-r from-somnia-cyan to-mx-green px-1.5 sm:px-2 py-0.5 rounded-full">
                 AI
               </span>
             </>
@@ -367,27 +367,27 @@ export default function PostJob() {
       </motion.div>
 
       {/* Form */}
-      <motion.form onSubmit={handleSubmit} className="space-y-6 relative" style={{ zIndex: 1 }}>
+      <motion.form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 relative" style={{ zIndex: 1 }}>
         {/* Title */}
-        <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-6 border border-white/10">
-          <label className="text-white/80 mb-3 font-mono text-sm uppercase tracking-wide flex items-center space-x-2">
-            <DollarSign className="w-4 h-4" />
+        <div className="backdrop-blur-xl bg-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10">
+          <label className="text-white/80 mb-2 sm:mb-3 font-mono text-xs sm:text-sm uppercase tracking-wide flex items-center space-x-2">
+            <DollarSign className="w-3 h-3 sm:w-4 sm:h-4" />
             <span>Job Title</span>
           </label>
           <input
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
             placeholder="Emergency Plumber"
-            className="w-full bg-white/10 border border-white/20 rounded-xl px-5 py-4 text-white placeholder-white/50 backdrop-blur-xl focus:outline-none focus:border-somnia-purple/50 focus:ring-2 focus:ring-somnia-purple/20 text-lg font-mono transition-all duration-300"
+            className="w-full bg-white/10 border border-white/20 rounded-lg sm:rounded-xl px-4 sm:px-5 py-3 sm:py-4 text-white placeholder-white/50 backdrop-blur-xl focus:outline-none focus:border-somnia-purple/50 focus:ring-2 focus:ring-somnia-purple/20 text-sm sm:text-base lg:text-lg font-mono transition-all duration-300"
             required
           />
         </div>
 
         {/* Location + Map */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-6 border border-white/10 relative" style={{ zIndex: 1 }}>
-            <label className="text-white/80 mb-3 font-mono text-sm uppercase tracking-wide flex items-center space-x-2">
-              <MapPin className="w-4 h-4" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+          <div className="backdrop-blur-xl bg-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 relative" style={{ zIndex: 1 }}>
+            <label className="text-white/80 mb-2 sm:mb-3 font-mono text-xs sm:text-sm uppercase tracking-wide flex items-center space-x-2">
+              <MapPin className="w-3 h-3 sm:w-4 sm:h-4" />
               <span>Location</span>
             </label>
             <div className="relative" style={{ zIndex: 9999 }}>
@@ -399,25 +399,25 @@ export default function PostJob() {
             </div>
           </div>
           
-          <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-6 border border-white/10">
-            <label className="text-white/80 mb-3 font-mono text-sm uppercase tracking-wide flex items-center space-x-2">
-              <Clock className="w-4 h-4" />
+          <div className="backdrop-blur-xl bg-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10">
+            <label className="text-white/80 mb-2 sm:mb-3 font-mono text-xs sm:text-sm uppercase tracking-wide flex items-center space-x-2">
+              <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
               <span>Deadline</span>
             </label>
             <input
               type="datetime-local"
               value={formData.deadline}
               onChange={(e) => setFormData({ ...formData, deadline: e.target.value })}
-              className="w-full bg-white/10 border border-white/20 rounded-xl px-5 py-4 text-white backdrop-blur-xl focus:ring-somnia-purple/20 transition-all duration-300 font-mono"
+              className="w-full bg-white/10 border border-white/20 rounded-lg sm:rounded-xl px-4 sm:px-5 py-3 sm:py-4 text-white backdrop-blur-xl focus:ring-somnia-purple/20 transition-all duration-300 font-mono text-sm sm:text-base"
               required
             />
           </div>
         </div>
 
         {/* Reward */}
-        <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-6 border border-white/10">
-          <label className="text-white/80 mb-3 font-mono text-sm uppercase tracking-wide flex items-center space-x-2">
-            <DollarSign className="w-4 h-4" />
+        <div className="backdrop-blur-xl bg-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10">
+          <label className="text-white/80 mb-2 sm:mb-3 font-mono text-xs sm:text-sm uppercase tracking-wide flex items-center space-x-2">
+            <DollarSign className="w-3 h-3 sm:w-4 sm:h-4" />
             <span>Reward (STT)</span>
           </label>
           <input
@@ -425,10 +425,10 @@ export default function PostJob() {
             value={formData.reward}
             onChange={(e) => setFormData({ ...formData, reward: e.target.value })}
             placeholder="500"
-            className="w-full bg-gradient-to-r from-mx-green/20 to-somnia-purple/20 border border-mx-green/30 rounded-xl px-4 md:px-5 py-3 md:py-4 text-xl md:text-2xl font-black text-mx-green font-mono focus:ring-mx-green/30 text-right"
+            className="w-full bg-gradient-to-r from-mx-green/20 to-somnia-purple/20 border border-mx-green/30 rounded-lg sm:rounded-xl px-3 sm:px-4 md:px-5 py-2.5 sm:py-3 md:py-4 text-lg sm:text-xl md:text-2xl font-black text-mx-green font-mono focus:ring-mx-green/30 text-right"
             required
           />
-          <p className="text-xs text-white/50 mt-2 font-mono">
+          <p className="text-[10px] sm:text-xs text-white/50 mt-2 font-mono">
             STT = Shannon Test Token | Gas included | 0% fees
           </p>
         </div>
@@ -436,18 +436,18 @@ export default function PostJob() {
         {/* Gemini Suggestions */}
         {geminiSuggestions.length > 0 && (
           <motion.div 
-            className="backdrop-blur-xl bg-gradient-to-r from-somnia-purple/10 to-mx-green/10 rounded-2xl p-6 border border-somnia-purple/20 shadow-neural-glow"
+            className="backdrop-blur-xl bg-gradient-to-r from-somnia-purple/10 to-mx-green/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-somnia-purple/20 shadow-neural-glow"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <h4 className="font-bold text-white mb-4 flex items-center space-x-2">
-              <Bot className="w-5 h-5 text-somnia-cyan" />
+            <h4 className="font-bold text-white mb-3 sm:mb-4 flex flex-wrap items-center gap-2 text-sm sm:text-base">
+              <Bot className="w-4 h-4 sm:w-5 sm:h-5 text-somnia-cyan" />
               <span>Gemini AI Suggestions</span>
-              <span className="text-xs bg-gradient-to-r from-somnia-cyan to-mx-green px-2 py-0.5 rounded-full font-mono">
+              <span className="text-[10px] sm:text-xs bg-gradient-to-r from-somnia-cyan to-mx-green px-1.5 sm:px-2 py-0.5 rounded-full font-mono">
                 Powered by Gemini
               </span>
             </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
               {geminiSuggestions.map((suggestion, idx) => {
                 // Clean suggestion text - remove any remaining JSON artifacts
                 const cleanSuggestion = suggestion
@@ -465,15 +465,15 @@ export default function PostJob() {
                       setFormData(prev => ({ ...prev, title: titleOnly }))
                       setGeminiSuggestions([])
                     }}
-                    className="p-4 bg-white/10 hover:bg-white/20 backdrop-blur-xl rounded-xl border border-white/20 text-left transition-all duration-300 hover:scale-105 hover:border-somnia-cyan/50 font-mono text-sm text-white break-words"
+                    className="p-3 sm:p-4 bg-white/10 hover:bg-white/20 backdrop-blur-xl rounded-lg sm:rounded-xl border border-white/20 text-left transition-all duration-300 hover:scale-105 hover:border-somnia-cyan/50 font-mono text-xs sm:text-sm text-white break-words"
                     whileHover={{ scale: 1.02 }}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.1 }}
                   >
-                    <div className="flex items-start space-x-2">
-                      <span className="text-somnia-cyan font-bold">{idx + 1}.</span>
-                      <span className="flex-1">{cleanSuggestion}</span>
+                    <div className="flex items-start space-x-1.5 sm:space-x-2">
+                      <span className="text-somnia-cyan font-bold text-xs sm:text-sm">{idx + 1}.</span>
+                      <span className="flex-1 text-xs sm:text-sm">{cleanSuggestion}</span>
                     </div>
                   </motion.button>
                 )
@@ -486,13 +486,13 @@ export default function PostJob() {
         <motion.button
           type="submit"
           disabled={isPending}
-          className="w-full bg-gradient-to-r from-somnia-purple via-mx-green to-neural-blue hover:from-somnia-purple/90 p-8 rounded-3xl text-2xl font-black text-white shadow-2xl shadow-somnia-purple/40 hover:shadow-neural-glow-lg transition-all duration-500 border-2 border-white/30 backdrop-blur-3xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-4"
+          className="w-full bg-gradient-to-r from-somnia-purple via-mx-green to-neural-blue hover:from-somnia-purple/90 p-6 sm:p-8 rounded-2xl sm:rounded-3xl text-lg sm:text-xl lg:text-2xl font-black text-white shadow-2xl shadow-somnia-purple/40 hover:shadow-neural-glow-lg transition-all duration-500 border-2 border-white/30 backdrop-blur-3xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 sm:space-x-4"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          <Send className="w-8 h-8" />
-          <span>{isPending ? 'Publishing Live...' : 'Post Job Live SDS'}</span>
-          <div className="w-3 h-3 bg-mx-green rounded-full animate-ping" />
+          <Send className="w-5 h-5 sm:w-6 lg:w-8 lg:h-8" />
+          <span className="text-sm sm:text-base lg:text-lg xl:text-xl">{isPending ? 'Publishing Live...' : 'Post Job Live SDS'}</span>
+          <div className="w-2 h-2 sm:w-3 sm:h-3 bg-mx-green rounded-full animate-ping" />
         </motion.button>
       </motion.form>
         </motion.div>

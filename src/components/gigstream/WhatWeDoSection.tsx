@@ -35,33 +35,33 @@ export default function WhatWeDoSection() {
   return (
     <section id="what-we-do" className="py-20 bg-gradient-to-b from-somnia-dark/95 to-somnia-dark relative neural-bg overflow-hidden">
       <BlockchainNetwork />
-      <div className="container mx-auto px-4 lg:px-8 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-8 sm:mb-12"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-block mb-4"
+            className="inline-block mb-3 sm:mb-4"
           >
-            <TrendingUp className="w-8 h-8 text-mx-green mx-auto" />
+            <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-mx-green mx-auto" />
           </motion.div>
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-black mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-4 sm:mb-6 px-4">
             <span className="neural-text text-neural-glow-lg">
               What We Do
             </span>
           </h2>
-          <p className="text-xl md:text-2xl text-white/80 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/80 max-w-4xl mx-auto leading-relaxed px-4">
             Transforming the global freelance economy through 
             <span className="text-somnia-cyan font-semibold"> blockchain technology</span> and real-time job matching.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
           {missions.map((mission, idx) => (
             <motion.div
               key={mission.title}
@@ -71,22 +71,22 @@ export default function WhatWeDoSection() {
               transition={{ delay: idx * 0.1 }}
               className="group relative"
             >
-              <div className="h-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-10 hover:border-somnia-purple/50 transition-all duration-500 hover:shadow-neural-glow-xl neural-hover relative overflow-hidden group">
+              <div className="h-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 hover:border-somnia-purple/50 transition-all duration-500 hover:shadow-neural-glow-xl neural-hover relative overflow-hidden group">
                 <div className="neural-shimmer absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className={`absolute inset-0 bg-gradient-to-br ${mission.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
                 
                 <div className="relative z-10">
                   <motion.div
-                    className={`w-20 h-20 bg-gradient-to-br ${mission.color} rounded-2xl flex items-center justify-center mb-6 shadow-neural-glow`}
+                    className={`w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20 bg-gradient-to-br ${mission.color} rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 shadow-neural-glow`}
                     whileHover={{ scale: 1.15, rotate: 360 }}
                     transition={{ duration: 0.6 }}
                   >
-                    <mission.icon className="w-10 h-10 text-white" />
+                    <mission.icon className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 text-white" />
                   </motion.div>
-                  <h3 className="text-3xl md:text-4xl font-bold text-white mb-4 group-hover:text-somnia-cyan transition-colors">
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4 group-hover:text-somnia-cyan transition-colors">
                     {mission.title}
                   </h3>
-                  <p className="text-white/80 leading-relaxed text-lg">
+                  <p className="text-white/80 leading-relaxed text-base sm:text-lg">
                     {mission.description}
                   </p>
                 </div>
@@ -100,32 +100,32 @@ export default function WhatWeDoSection() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-16 backdrop-blur-xl bg-gradient-to-r from-somnia-purple/20 via-somnia-cyan/20 to-mx-green/20 border border-somnia-purple/30 rounded-3xl p-12 neural-hover"
+          className="mt-12 sm:mt-16 backdrop-blur-xl bg-gradient-to-r from-somnia-purple/20 via-somnia-cyan/20 to-mx-green/20 border border-somnia-purple/30 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 neural-hover"
         >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-center">
             <motion.div
               whileHover={{ scale: 1.05, y: -5 }}
               className="relative"
             >
-              <div className="text-6xl font-black neural-text mb-2">Global</div>
-              <div className="text-white/80 text-lg uppercase tracking-wide font-bold mb-1">Workers</div>
-              <div className="text-white/60 text-sm">Worldwide reach</div>
+              <div className="text-4xl sm:text-5xl lg:text-6xl font-black neural-text mb-1 sm:mb-2">Global</div>
+              <div className="text-white/80 text-base sm:text-lg uppercase tracking-wide font-bold mb-1">Workers</div>
+              <div className="text-white/60 text-xs sm:text-sm">Worldwide reach</div>
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.05, y: -5 }}
               className="relative"
             >
-              <div className="text-6xl font-black neural-text mb-2">$10B</div>
-              <div className="text-white/80 text-lg uppercase tracking-wide font-bold mb-1">Market Size</div>
-              <div className="text-white/60 text-sm">Annual opportunity</div>
+              <div className="text-4xl sm:text-5xl lg:text-6xl font-black neural-text mb-1 sm:mb-2">$10B</div>
+              <div className="text-white/80 text-base sm:text-lg uppercase tracking-wide font-bold mb-1">Market Size</div>
+              <div className="text-white/60 text-xs sm:text-sm">Annual opportunity</div>
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.05, y: -5 }}
               className="relative"
             >
-              <div className="text-6xl font-black neural-text mb-2">&lt;2s</div>
-              <div className="text-white/80 text-lg uppercase tracking-wide font-bold mb-1">Job Matching</div>
-              <div className="text-white/60 text-sm">Sub-second finality</div>
+              <div className="text-4xl sm:text-5xl lg:text-6xl font-black neural-text mb-1 sm:mb-2">&lt;2s</div>
+              <div className="text-white/80 text-base sm:text-lg uppercase tracking-wide font-bold mb-1">Job Matching</div>
+              <div className="text-white/60 text-xs sm:text-sm">Sub-second finality</div>
             </motion.div>
           </div>
         </motion.div>

@@ -162,11 +162,11 @@ export default function LiveEventsPanel({
   ] as const
 
   return (
-    <div className={`backdrop-blur-xl bg-white/5 rounded-3xl p-6 border border-white/10 ${className}`}>
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center space-x-3">
-          <div className={`w-3 h-3 rounded-full ${isConnected ? 'bg-mx-green animate-pulse' : 'bg-red-400'}`} />
-          <h3 className="text-xl font-bold text-white">Live Events</h3>
+    <div className={`backdrop-blur-xl bg-white/5 rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-white/10 ${className}`}>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 mb-3 sm:mb-4">
+        <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${isConnected ? 'bg-mx-green animate-pulse' : 'bg-red-400'}`} />
+          <h3 className="text-lg sm:text-xl font-bold text-white">Live Events</h3>
         </div>
         <span className="text-xs text-white/60 font-mono">
           {filteredEvents.length} event{filteredEvents.length !== 1 ? 's' : ''}
@@ -174,12 +174,12 @@ export default function LiveEventsPanel({
       </div>
 
       {/* Tabs */}
-      <div className="flex flex-wrap gap-2 mb-4">
+      <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-3 py-1 rounded-lg text-xs font-medium transition-all ${
+            className={`px-2 sm:px-3 py-1 rounded-lg text-[10px] sm:text-xs font-medium transition-all ${
               activeTab === tab.id
                 ? 'bg-gradient-to-r from-somnia-purple to-mx-green text-white'
                 : 'bg-white/5 text-white/60 hover:bg-white/10'
@@ -191,7 +191,7 @@ export default function LiveEventsPanel({
       </div>
 
       {/* Connection Status Debug - Always visible for transparency */}
-      <div className="mb-4 p-2 bg-white/5 rounded-lg text-xs text-white/50 font-mono space-y-1">
+      <div className="mb-3 sm:mb-4 p-2 sm:p-3 bg-white/5 rounded-lg text-[10px] sm:text-xs text-white/50 font-mono space-y-1 overflow-x-auto">
         <div className="flex items-center justify-between">
           <span>Historical Events:</span>
           <span className={isLoadingHistorical ? 'text-yellow-400' : historicalEvents.length > 0 ? 'text-mx-green' : 'text-red-400'}>
@@ -237,7 +237,7 @@ export default function LiveEventsPanel({
       </div>
 
       {/* Events List */}
-      <div className="space-y-2 max-h-96 overflow-y-auto">
+      <div className="space-y-1.5 sm:space-y-2 max-h-64 sm:max-h-80 lg:max-h-96 overflow-y-auto scrollbar-thin">
         <AnimatePresence mode="popLayout">
           {filteredEvents.length > 0 ? (
             filteredEvents.map((event, index) => (
@@ -247,32 +247,34 @@ export default function LiveEventsPanel({
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ delay: index * 0.05 }}
-                className={`backdrop-blur-xl bg-gradient-to-r ${getEventColor(event.type)} rounded-xl p-3 border`}
+                className={`backdrop-blur-xl bg-gradient-to-r ${getEventColor(event.type)} rounded-lg sm:rounded-xl p-2 sm:p-3 border`}
               >
-                <div className="flex items-start space-x-3">
-                  <div className="mt-0.5">
+                <div className="flex items-start space-x-2 sm:space-x-3">
+                  <div className="mt-0.5 flex-shrink-0">
                     {getEventIcon(event.type)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-white font-medium truncate">
+                    <p className="text-xs sm:text-sm text-white font-medium break-words">
                       {formatEventMessage(event)}
                     </p>
-                    <div className="flex items-center space-x-2 mt-1">
-                      <Clock className="w-3 h-3 text-white/40" />
-                      <span className="text-xs text-white/50 font-mono">
-                        {event.receivedAt 
-                          ? formatDistanceToNow(new Date(event.receivedAt), { 
-                              addSuffix: true, 
-                              locale: enUS 
-                            })
-                          : 'Just now'}
-                      </span>
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1">
+                      <div className="flex items-center space-x-1">
+                        <Clock className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white/40" />
+                        <span className="text-[10px] sm:text-xs text-white/50 font-mono">
+                          {event.receivedAt 
+                            ? formatDistanceToNow(new Date(event.receivedAt), { 
+                                addSuffix: true, 
+                                locale: enUS 
+                              })
+                            : 'Just now'}
+                        </span>
+                      </div>
                       {event.transactionHash && (
                         <a
                           href={`https://shannon-explorer.somnia.network/tx/${event.transactionHash}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xs text-somnia-cyan hover:underline font-mono"
+                          className="text-[10px] sm:text-xs text-somnia-cyan hover:underline font-mono"
                         >
                           View TX
                         </a>
@@ -283,15 +285,15 @@ export default function LiveEventsPanel({
               </motion.div>
             ))
           ) : (
-            <div className="text-center py-8">
+            <div className="text-center py-6 sm:py-8">
               <div className="space-y-2">
-                <p className="text-white/50 text-sm">
+                <p className="text-white/50 text-xs sm:text-sm px-2">
                   {isConnected 
                     ? 'No events yet - Events will appear here as they happen on-chain' 
                     : 'Connecting to streams...'}
                 </p>
                 {isConnected && (
-                  <p className="text-white/30 text-xs">
+                  <p className="text-white/30 text-[10px] sm:text-xs px-2">
                     Try posting a job or placing a bid to see live events!
                   </p>
                 )}
@@ -303,8 +305,8 @@ export default function LiveEventsPanel({
 
       {/* Connection Status */}
       {!isConnected && (
-        <div className="mt-4 pt-4 border-t border-white/10">
-          <p className="text-xs text-white/50 text-center">
+        <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-white/10">
+          <p className="text-[10px] sm:text-xs text-white/50 text-center">
             Reconnecting to event streams...
           </p>
         </div>
