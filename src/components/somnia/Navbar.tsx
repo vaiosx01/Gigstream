@@ -276,7 +276,8 @@ export default function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMenuOpen(false)}
-              className="lg:hidden fixed inset-0 bg-black z-[45]"
+              className="lg:hidden fixed inset-0 z-[45]"
+              style={{ backgroundColor: '#000000' }}
             />
             {/* Mobile Menu Panel - Completely solid */}
             <motion.div
@@ -285,7 +286,7 @@ export default function Navbar() {
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
               className="lg:hidden fixed inset-y-0 left-0 w-[85vw] max-w-sm z-[50] shadow-2xl border-r border-somnia-cyan/20"
-              style={{ backgroundColor: 'hsl(var(--somnia-dark))' }}
+              style={{ backgroundColor: 'hsl(240, 20%, 10%)' }}
             >
               {/* Mobile Menu Header */}
               <div className="flex items-center justify-between p-4 sm:p-6 border-b border-white/10">
